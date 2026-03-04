@@ -149,3 +149,31 @@ export const NAV_LINKS = [
   { label: "Certificates", href: "/certificates" },
   { label: "Contact", href: "/contact" },
 ];
+
+export const TIMELINE_EVENTS = [
+  {
+    year: "2022",
+    title: "The Beginning",
+    description: "Started my coding journey with simple HTML pages, curious about how websites actually work under the hood."
+  },
+  {
+    year: "2023",
+    title: "Expanding Skills",
+    description: "Picked up CSS and JavaScript, built my first interactive web projects and started exploring Linux environments."
+  },
+  {
+    year: "2024",
+    title: "Diving Deeper",
+    description: "Learned Python and started building real tools — from automation scripts to a full PHP inventory management system (Pocketphone)."
+  },
+  {
+    year: "2025",
+    title: "AI & Beyond",
+    description: "Built a multi-agent AI customer support system with Gemini AI and FastAPI. Earned certifications from TCS iON, Anthropic, Walmart, and others."
+  },
+  {
+    year: "2026",
+    title: "Now",
+    description: "Class 10 student, active developer, and constant learner — building projects, writing about tech, and pushing boundaries one commit at a time."
+  }
+];

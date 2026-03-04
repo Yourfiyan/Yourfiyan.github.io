@@ -76,50 +76,27 @@ export const LABS: Lab[] = [
 export const CERTIFICATES: Certificate[] = [
   {
     id: 1,
-    title: "Master Data Management for Beginners",
-    issuer: "TCS iON",
-    date: "14 Jul 2025",
-    certId: "71279-28639249-1016",
-    link: "/assets/certificates/1.pdf",
-    image: "/assets/image/1.jpg"
-  },
-  {
-    id: 2,
     title: "UX Design Introduction",
     issuer: "Lloyds Banking Group",
     date: "Nov 2025",
     link: "https://www.theforage.com/completion-certificates/Zbnc2o4ok6kD2NEXx/N65hfzBKXRiATv6yd_Zbnc2o4ok6kD2NEXx_691896edf8a076de76e259b6_1763236687789_completion_certificate.pdf"
   },
   {
-    id: 3,
-    title: "GenAI Powered Data Analytics",
-    issuer: "Tata Group",
-    date: "Nov 2025",
-    link: "https://www.theforage.com/completion-certificates/ifobHAoMjQs9s6bKS/gMTdCXwDdLYoXZ3wG_ifobHAoMjQs9s6bKS_691896edf8a076de76e259b6_1763229118141_completion_certificate.pdf"
-  },
-  {
-    id: 4,
+    id: 2,
     title: "Advanced Software Engineering",
     issuer: "Walmart USA",
     date: "Nov 2025",
     link: "https://www.theforage.com/completion-certificates/prBZoAihniNijyD6d/oX6f9BbCL9kJDJzfg_prBZoAihniNijyD6d_691896edf8a076de76e259b6_1763225980303_completion_certificate.pdf"
   },
   {
-    id: 5,
-    title: "Personal Banker",
-    issuer: "Wells Fargo",
-    date: "Nov 2025",
-    link: "https://www.theforage.com/completion-certificates/nkmk7gJitYs4TBvoA/owmbvXSPLTqePC5gQ_nkmk7gJitYs4TBvoA_691896edf8a076de76e259b6_1763224943444_completion_certificate.pdf"
-  },
-  {
-    id: 6,
+    id: 3,
     title: "Front-End Software Engineering",
     issuer: "Skyscanner",
     date: "Dec 2025",
     link: "https://www.theforage.com/completion-certificates/skoQmxqhtgWmKv2pm/km4rw7dihDr3etqom_skoQmxqhtgWmKv2pm_691896edf8a076de76e259b6_1765206899738_completion_certificate.pdf"
   },
   {
-    id: 7,
+    id: 4,
     title: "Claude 101",
     issuer: "Anthropic",
     date: "Mar 2026",
@@ -127,7 +104,7 @@ export const CERTIFICATES: Certificate[] = [
     link: "/assets/certificates/7-claude-101.pdf"
   },
   {
-    id: 8,
+    id: 5,
     title: "Claude with the Anthropic API",
     issuer: "Anthropic",
     date: "Mar 2026",

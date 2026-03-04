@@ -21,7 +21,6 @@ build-blogs.cjs
 generate-blog.cjs
 blog-draft.md
 blogs/
-AI_INSTRUCTIONS.md
 DEPLOYMENT_INSTRUCTIONS.md
 
 # Python

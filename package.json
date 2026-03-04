@@ -1,0 +1,29 @@
+{
+  "name": "syed-sufiyan-hamza-portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node build-blogs.cjs && vite build",
+    "preview": "vite preview",
+    "blogs": "node build-blogs.cjs",
+    "blog:generate": "node generate-blog.cjs",
+    "blog:dry": "node generate-blog.cjs --dry",
+    "dashboard": "node dashboard.cjs"
+  },
+  "dependencies": {
+    "framer-motion": "^12.27.5",
+    "lucide-react": "^0.562.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-router-dom": "6.22.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "basic-ftp": "^5.2.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}

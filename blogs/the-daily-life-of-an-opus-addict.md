@@ -1,0 +1,17 @@
+---
+title: "The Daily Life of an Opus Addict"
+date: "March 2026"
+tags: ["AI","Copilot","Developer Life","Claude Opus","AI Stories"]
+---
+
+I recently asked Copilot, or more specifically, Claude Opus, to take a look at my portfolio website. Sounds like a pretty standard developer thing to do, right? Just a quick "analyze my site and tell me what could be better." But what happened next was honestly a bit wild and made me realize something: I'm apparently a full-blown Opus addict. I'm talking about using the biggest, most powerful model for literally everything, from planning architecture and debugging complex code all the way down to making a simple text file or even just saying "hi" back to me – which probably cost a few rupees worth of compute for a single greeting.
+
+So, when I threw my portfolio at it, Opus didn't just casually glance; it went into absolute full-engineer mode. It started scanning my entire workspace, diving deep into file structures, components, routes, styles, you name it. The craziest part is that this whole intricate analysis was happening within the chat's context window, which is massive at around 128k tokens. Yet, somehow, we still managed to run out of context – not once, not twice, but four different times.
+
+Every single time, the conversation ballooned because the AI agent was constantly reasoning about the codebase and spitting out detailed improvement suggestions. When the context eventually died, Claude, being the absolute beast it is, would just restart the entire analysis process from scratch, rebuilding its understanding and the context window to about 30% after forgetting the older parts of our chat. It’s pretty funny when you think about it: I'm sitting there watching my premium requests slowly vanish as Opus basically performs a full engineering review of a simple portfolio site.
+
+But the peak of this whole experience happened a little later. After Opus gave me a bunch of output, I just typed "ok" as a normal human acknowledgment. What I didn't realize was that "ok" can apparently trigger autonomous debugging mode. Inside its thinking panel, it started processing, "user wasn't satisfied..." and then, without any further prompt, it literally began scanning my entire workspace again, reading files, checking code, actively looking for problems. It actually found some random, obscure bug in my portfolio that I probably never would have noticed, and then fixed it, replying with something like "Here's the updated site." All of that, just because I said "ok."
+
+Later, when I checked my usage dashboard, the reality hit even harder. More than 80% of my compute usage was dedicated to Claude Opus. That means I'm routinely deploying one of the strongest reasoning models available today for tasks like confirming things, making tiny edits, explaining stuff I mostly grasp already, and, yes, occasionally performing massive, multi-context-window workspace analyses. It's kind of ridiculous, but also genuinely amazing.
+
+In a weird way, though, this *is* the new developer workflow. Instead of just coding alone, you're essentially working alongside a ridiculously powerful AI teammate that sometimes just overthinks everything. You say "ok," and it hears "INITIATE FULL WORKSPACE INSPECTION." Somewhere in a data center, a GPU spins up just to make sure your portfolio website doesn't have a broken import, all triggered by a simple two-letter word. And honestly? Totally worth it.

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - YRFN-PH-1025-2025</title>
+    <style>
+        :root {
+            --color-primary: #2c3e50;
+            --color-accent: #3498db;
+            --color-text: #2c3e50;
+            --color-border: #bdc3c7;
+            --color-bg: #ffffff;
+            --color-bg-alt: #ecf0f1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--color-bg);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .invoice-header {
+            background: var(--color-primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .invoice-header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .invoice-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .invoice-body {
+            padding: 40px;
+        }
+
+        .info-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .info-box {
+            background: var(--color-bg-alt);
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .info-box h3 {
+            color: var(--color-accent);
+            font-size: 16px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-box p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--color-text);
+        }
+
+        .info-box strong {
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .invoice-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 6px;
+            border: 1px solid #ffc107;
+        }
+
+        .invoice-meta div {
+            font-size: 14px;
+        }
+
+        .invoice-meta strong {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .project-title {
+            background: var(--color-accent);
+            color: white;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        thead {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        th:last-child,
+        td:last-child {
+            text-align: right;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        tbody tr:hover {
+            background: var(--color-bg-alt);
+        }
+
+        td {
+            padding: 15px;
+            font-size: 14px;
+            color: var(--color-text);
+        }
+
+        .service-desc {
+            color: #7f8c8d;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .totals {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+            padding: 10px 0;
+            font-size: 15px;
+        }
+
+        .subtotal {
+            border-top: 2px solid var(--color-border);
+            padding-top: 10px;
+        }
+
+        .grand-total {
+            background: var(--color-primary);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .optional-service {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .optional-service h4 {
+            color: #0c5460;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .optional-service p {
+            color: #0c5460;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .signature-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--color-border);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .signature-box {
+            text-align: center;
+        }
+
+        .signature-box p {
+            margin-bottom: 40px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .signature-line {
+            border-top: 2px solid var(--color-primary);
+            padding-top: 10px;
+            min-width: 200px;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .footer {
+            background: var(--color-bg-alt);
+            padding: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--color-bg-alt);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-secondary {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .payment-section {
+            background: var(--color-bg-alt);
+            border-radius: 6px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .payment-section h4 {
+            font-size: 18px;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .payment-buttons {
+            display: flex;
+            justify-content: center; /* This will keep the single button centered */
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .payment-qr {
+            margin-bottom: 15px;
+        }
+
+        .payment-qr img {
+            width: 150px;
+            height: 150px;
+            border: 5px solid white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn-pay {
+            background: #007bff; /* A generic payment blue */
+            color: white;
+        }
+        .btn-pay:hover {
+            background: #0069d9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-upi {
+            background: #28a745; /* A green for UPI/success */
+            color: white;
+        }
+        .btn-upi:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .info-section {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .invoice-body {
+                padding: 20px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+            padding: 10px 5px;
+        }
+
+        .total-row {
+            width: 100%;
+        }
+    }
+
+    /* Added new styles for payment terms and amount due */
+    .payment-terms {
+        background: var(--color-bg-alt);
+        border-left: 4px solid var(--color-border);
+        border-radius: 6px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    .payment-terms h4 {
+        color: var(--color-primary);
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+    .payment-terms ul {
+        list-style-position: inside;
+        padding-left: 5px;
+    }
+    .payment-terms li {
+        color: var(--color-text);
+        font-size: 14px;
+        line-height: 1.6;
+        margin-top: 5px;
+    }
+    
+    .due-now {
+        background: #27ae60; /* Green to highlight action */
+        color: white;
+        padding: 15px 20px;
+        border-radius: 6px;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+    .due-now .total-row {
+        width: 100%; /* Ensure it fills the new container */
+    }
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="invoice-header">
+            <h1>PROFORMA INVOICE / BILL OF SUPPLY</h1>
+            <p>Professional Web Development Services</p>
+        </div>
+
+        <div class="invoice-body">
+            <div class="info-section">
+                <div class="info-box">
+                    <h3>Developer / Issuer</h3>
+                    <p>
+                        <strong>yourfiyan</strong><br>
+                        Syed Sufiyan Hamza<br>
+                        Titabar, Assam, PIN 785630<br>
+                        <strong>GSTIN:</strong> Not Applicable (Unregistered Supplier)<br>
+                        <strong>Email:</strong> yourfiyan@proton.me
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <h3>Recipient / Client</h3>
+                    <p>
+                        <strong>PocketPhone</strong><br>
+                        Nakachari, Assam<br>
+                        <strong>Phone:</strong> +91 9707643357<br>
+                        <strong>Location:</strong> Jorhat / Sivasagar, Assam<br>
+                        <strong>Instagram:</strong> @pocketphone2025
+                    </p>
+                </div>
+            </div>
+
+            <div class="invoice-meta">
+                <div>
+                    <strong>Invoice Date:</strong> October 25, 2025
+                </div>
+                <div>
+                    <strong>Invoice Number:</strong> YRFN-PH-1025-2025
+                </div>
+            </div>
+
+            <div class="project-title">
+                Project: PocketPhone Dynamic Website Development
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">S. No</th>
+                        <th>Description of Service</th>
+                        <th style="width: 120px;">Amount (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <strong>Custom UI/UX Design Adaptation</strong>
+                            <div class="service-desc">Implementing dark theme, accent colors, and responsive layout</div>
+                        </td>
+                        <td>500.00</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>
+                            <strong>Front-End Development &amp; Integration</strong>
+                            <div class="service-desc">Coding and integration of all 5 public-facing sections</div>
+                        </td>
+                        <td>650.00</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>
+                            <strong>PHP Backend &amp; Controller Logic</strong>
+                            <div class="service-desc">Development of secure PHP scripts and authentication for Admin Panel</div>
+                        </td>
+                        <td>750.00</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>
+                            <strong>MySQL Database Integration (CRUD)</strong>
+                            <div class="service-desc">Setup of products table and CRUD operations for Admin Dashboard</div>
+                        </td>
+                        <td>350.00</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>
+                            <strong>Infrastructure &amp; Deployment (1 Year)</strong>
+                            <div class="service-desc">Provision of 1 Year of Budget Shared Hosting and a free subdomain</div>
+                        </td>
+                        <td>748.99</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="totals">
+                <div class="total-row subtotal">
+                    <span><strong>Subtotal:</strong></span>
+                    <span><strong>₹ 2,998.99</strong></span>
+                </div>
+                <div class="grand-total">
+                    <div class="total-row">
+                        <!-- Renamed for clarity -->
+                        <span>TOTAL PROJECT COST:</span>
+                        <span>₹ 2,998.99</span>
+                    </div>
+                </div>
+                <!-- Added new block for Amount Due Now -->
+                <div class="due-now">
+                    <div class="total-row">
+                        <span>AMOUNT DUE NOW (Upfront):</span>
+                        <span>₹ 1,000.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Added new Payment Terms section -->
+            <div class="payment-terms">
+                <h4>Payment Terms</h4>
+                <ul>
+                    <li>An upfront payment of <strong>₹1,000.00</strong> is required to begin the project. This covers the 1-year infrastructure costs (S. No 5) and the initial UI/UX design phase (S. No 1).</li>
+                    <li>The remaining balance of <strong>₹1,998.99</strong> is due upon project completion and final delivery.</li>
+                </ul>
+            </div>
+
+            <div class="optional-service">
+                <h4>📦 Optional Service (Add-on)</h4>
+                <p>
+                    <strong>Annual Technical Maintenance (AMC) – ₹ 800.00/year</strong><br>
+                    Includes: 1 year technical support, monthly database backups, and security patch monitoring.
+                </p>
+            </div>
+
+            <div class="payment-section">
+                <!-- Updated title -->
+                <h4>Pay Upfront Amount</h4>
+                <div class="payment-qr">
+                    <!-- Using the uploaded QR code -->
+                    <img src="image_872e48.png" alt="UPI QR Code">
+                    <!-- Added warning about the QR code amount -->
+                    <p style="font-size: 12px; color: #c0392b; margin-top: 10px; font-weight: bold;">
+                        Note: QR code is for the *full amount*. Please use the button below or manually enter ₹1,000.00.
+                    </p>
+                </div>
+                <div class="payment-buttons">
+                    <!-- Updated UPI link amount and button text -->
+                    <a href="upi://pay?pa=yoursufiyan@fam&am=1000.00&cu=INR" class="btn btn-upi">
+                        <!-- SVG for UPI/QR -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zM1 2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H3V1H1V2zm2 1h10v10H3V3z"/>
+                            <path d="M5 5h2v2H5V5zm4 0h2v2H9V5zM5 9h2v2H5V9zm4 0h2v2H9V9z"/>
+                        </svg>
+                        Pay Upfront (₹1,000.00)
+                    </a>
+                    <!-- Removed the "Pay with Card/Netbanking" button -->
+                </div>
+            </div>
+
+            <div class="signature-section">
+                <div class="signature-box">
+                    <p>Authorized Signature</p>
+                    <div class="signature-line">yourfiyan</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Thank you for your business!</strong></p>
+            <p>This is a digitally generated invoice. For any queries, please contact: yourfiyan@proton.me</p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+

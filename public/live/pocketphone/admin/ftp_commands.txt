@@ -1,0 +1,11 @@
+open ftpupload.net
+if0_40152047
+$env:FTP_PASSWORD
+bin
+cd /home/vol6_2/infinityfree.com/if0_40152047/yourfiyan.qzz.io/htdocs/live/pocketphone/admin
+put index.php
+put style.css
+put add_product.php
+put edit_product.php
+put delete_product.php
+bye

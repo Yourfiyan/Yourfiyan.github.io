@@ -1,0 +1,140 @@
+/* General styling and variables */
+:root {
+    --bg-dark: #1a1a2e; /* Dark background */
+    --calculator-bg: #2d2d44; /* Slightly lighter dark for calculator body */
+    --display-bg: #161625; /* Even darker for display */
+    --text-color: #e0e0e0; /* Light text */
+    --operator-color: #ff8c42; /* Orange for operators */
+    --equals-color: #4CAF50; /* Green for equals */
+    --clear-color: #e74c3c; /* Red for clear */
+    --button-bg: #3c3c52; /* Default button background */
+    --button-hover-bg: #4a4a63; /* Button hover effect */
+    --border-radius-main: 20px;
+    --border-radius-btn: 10px;
+    --shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    --transition-speed: 0.2s ease-in-out;
+}
+
+body {
+    font-family: 'Segoe UI', Calibri, sans-serif; /* Your preferred font */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-dark); /* Dark theme background */
+    margin: 0;
+    color: var(--text-color);
+    overflow: hidden; /* Prevent scrollbars */
+}
+
+/* Calculator Container */
+.calculator-container {
+    background-color: var(--calculator-bg);
+    border-radius: var(--border-radius-main);
+    padding: 25px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 360px; /* Max width for calculator */
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Subtle border */
+    transition: all var(--transition-speed);
+}
+
+/* Calculator Display */
+.calculator-display {
+    background-color: var(--display-bg);
+    color: var(--text-color);
+    font-size: 3.2em; /* Larger font for display */
+    padding: 20px;
+    border-radius: var(--border-radius-btn);
+    text-align: right;
+    margin-bottom: 20px;
+    overflow-x: auto; /* Allow horizontal scrolling if numbers are too long */
+    white-space: nowrap; /* Keep content on a single line */
+    letter-spacing: 1px; /* Spacing for numbers */
+    min-height: 80px; /* Ensure a minimum height for display */
+    display: flex; /* Use flex to align content at the bottom-right */
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+/* Calculator Buttons Grid */
+.calculator-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns of equal width */
+    gap: 15px; /* Spacing between buttons */
+}
+
+/* Individual Button Styles */
+.btn {
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    border: none;
+    padding: 20px 0;
+    font-size: 1.6em; /* Font size for buttons */
+    border-radius: var(--border-radius-btn);
+    cursor: pointer;
+    transition: background-color var(--transition-speed), transform 0.1s ease-out;
+    outline: none; /* Remove outline on focus */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle button shadow */
+}
+
+.btn:hover {
+    background-color: var(--button-hover-bg);
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.btn:active {
+    transform: translateY(0); /* Press effect */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Specific Button Colors */
+.btn-operator {
+    background-color: var(--operator-color);
+    color: white;
+}
+
+.btn-operator:hover {
+    background-color: #ff9d5a; /* Lighter shade on hover */
+}
+
+.btn-equals {
+    background-color: var(--equals-color);
+    color: white;
+}
+
+.btn-equals:hover {
+    background-color: #5cb85c; /* Lighter shade on hover */
+}
+
+.btn-clear {
+    background-color: var(--clear-color);
+    color: white;
+}
+
+.btn-clear:hover {
+    background-color: #eb6050; /* Lighter shade on hover */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 400px) {
+    .calculator-container {
+        width: 95%; /* Adjust width for very small screens */
+        padding: 15px;
+    }
+
+    .calculator-display {
+        font-size: 2.8em;
+        min-height: 70px;
+    }
+
+    .calculator-buttons {
+        gap: 10px;
+    }
+
+    .btn {
+        font-size: 1.4em;
+        padding: 15px 0;
+    }
+}

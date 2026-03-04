@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalculatoReady - A Web Calculator</title>
+    <!-- Link to Font Awesome for clear icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Link to Google Fonts for Segoe UI (or similar fallback) -->
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Link to your custom stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator-container">
+        <!-- Display area for input and results -->
+        <div class="calculator-display" id="display">0</div>
+        
+        <div class="calculator-buttons">
+            <!-- First row of buttons -->
+            <button class="btn btn-clear" data-action="clear">C</button>
+            <button class="btn btn-operator" data-action="divide">÷</button>
+            <button class="btn btn-operator" data-action="multiply">×</button>
+            <button class="btn btn-operator" data-action="backspace">←</button>
+
+            <!-- Second row of buttons -->
+            <button class="btn btn-number">7</button>
+            <button class="btn btn-number">8</button>
+            <button class="btn btn-number">9</button>
+            <button class="btn btn-operator" data-action="subtract">-</button>
+
+            <!-- Third row of buttons -->
+            <button class="btn btn-number">4</button>
+            <button class="btn btn-number">5</button>
+            <button class="btn btn-number">6</button>
+            <button class="btn btn-operator" data-action="add">+</button>
+
+            <!-- Fourth row of buttons -->
+            <button class="btn btn-number">1</button>
+            <button class="btn btn-number">2</button>
+            <button class="btn btn-number">3</button>
+            <button class="btn btn-equals" data-action="equals">=</button>
+
+            <!-- Fifth row (for 0 and decimal, 0 spans two columns) -->
+            <button class="btn btn-number btn-zero" style="grid-column: span 2;">0</button>
+            <button class="btn btn-decimal" data-action="decimal">.</button>
+        </div>
+    </div>
+
+    <!-- Link to your custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

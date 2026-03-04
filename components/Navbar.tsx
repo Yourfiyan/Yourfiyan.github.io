@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
               <Terminal size={20} className="text-secondary" />
             </div>
             <span className="font-bold text-lg tracking-tight text-white group-hover:text-secondary transition-colors">
-              Syed<span className="text-slate-500">.dev</span>
+              yourfiyan
             </span>
           </Link>
 

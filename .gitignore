@@ -15,6 +15,19 @@ dist-ssr
 # Dashboard runtime state
 .dashboard-state.json
 
+# Local tooling (not needed to build the site)
+dashboard.cjs
+build-blogs.cjs
+generate-blog.cjs
+blog-draft.md
+blogs/
+AI_INSTRUCTIONS.md
+DEPLOYMENT_INSTRUCTIONS.md
+
+# Python
+.venv/
+__pycache__/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -25,7 +38,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-.venv/
-__pycache__/
-*.py

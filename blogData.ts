@@ -4,6 +4,30 @@ import { BlogPost } from './types';
 export const BLOG_POSTS: BlogPost[] = [
   {
     "id": "1",
+    "slug": "building-an-india-civic-transparency-map-and-accidentally-turning-ai-into-my-co-developer",
+    "title": "Building an India Civic Transparency Map (and accidentally turning AI into my co-developer)",
+    "excerpt": "Have you ever wondered what it would be like if you could click on any district in India and instantly see all its public data? Things like local crime stati...",
+    "content": [
+      "Have you ever wondered what it would be like if you could click on any district in India and instantly see all its public data? Things like local crime statistics, ongoing court cases, or even details about infrastructure projects? That’s the idea that got me started on my latest project: building a civic transparency dashboard, a map where public data, usually buried in dusty government PDFs, could finally come to life. Sounds pretty straightforward, right? Well, it turns out \"straightforward\" in development often means \"an adventure full of surprises.\"",
+      "My first big hurdle was figuring out the development environment. My laptop is decent, but for a project this ambitious, I wanted a setup where an AI agent could really stretch its legs and help build the entire stack without me constantly hand-holding. So, in a move that I now realize was a bit wild, I decided to run the whole thing inside Kaggle notebooks. Yes, Kaggle, the machine learning platform! The AI agent, primarily Claude Opus, was literally architecting and building a full-stack application within an environment designed for data science experiments, and surprisingly, it actually worked for a while until it became too unwieldy.",
+      "That's when I shifted everything over to Google Colab, specifically for a T4 GPU and more room for the AI to operate. The vision was to let the agent roam free, creating files, installing dependencies, and spinning up servers while I just observed the beautiful chaos. And it absolutely delivered: at one point, the AI generated over 40 files in a single pass, including a React frontend with a map, a Node.js backend, a PostgreSQL database schema with PostGIS, a Python ETL pipeline, seed datasets, and even scripts to get everything running. It felt less like coding and more like supervising an incredibly enthusiastic, super-fast intern who never needed a coffee break. The funniest part? That T4 GPU I booked ended up doing precisely nothing for hours, just sitting there while the backend processed CSVs, ran SQL queries, and drew map layers, proving that for most data engineering, a GPU is completely useless.",
+      "Once the application finally came to life, a major reality check hit me: the platform technically worked, but it looked incredibly empty. The map showed a few lonely dots, crime data existed for just a handful of districts, and court cases were almost nonexistent. It was essentially a skeleton, hinting at a much larger system that was supposed to be there. That’s when it truly clicked for me that the hardest part of building civic tech isn't the code or the architecture; it's the data itself.",
+      "All the elegant APIs, the robust database, and the working frontend were powered by little more than demo samples: a mere 20 districts, 165 crime records, 25 court cases, and 30 infrastructure projects. For a country as vast and diverse as India, that’s practically nothing. So now, the next major phase of this project is less about writing new code and more about building sophisticated pipelines to ingest, normalize, and link real public datasets—crime statistics, court data, infrastructure projects, government spending—all tied directly to the districts on the map. The goal is to eventually enable anyone to click on a district and see comprehensive information like crime registrations, conviction rates, pending court cases, and public infrastructure projects, all in one transparent view.",
+      "Working with AI agents like Claude Opus throughout this entire process has been the most interesting part. Sometimes they act like brilliant, hyper-efficient engineers, anticipating needs and building out complex modules. Other times, they’re like an overzealous detective, taking a simple \"ok\" as a directive to scan the entire workspace for bugs, rewriting backend routes, updating files, and evolving the project in directions I hadn’t even considered. It’s chaotic, occasionally a little ridiculous, but also genuinely amazing. This whole experience feels like a glimpse into the future of developer workflow, where coding isn't just about typing lines, but about orchestrating a powerful AI collaborator that sometimes builds half your project while your expensive GPU just watches, doing absolutely nothing. And honestly, it's still totally worth it."
+    ],
+    "date": "March 2026",
+    "tags": [
+      "AI",
+      "Data Engineering",
+      "Civic Tech",
+      "Maps",
+      "Claude Opus",
+      "Developer Life"
+    ],
+    "readTime": "4 min read"
+  },
+  {
+    "id": "2",
     "slug": "building-portfolio-with-react",
     "title": "How I Built This Portfolio with React & Vite",
     "excerpt": "When I decided to build a portfolio, I had a clear vision: it should be fast, visually striking, and showcase my work effectively. After considering various ...",
@@ -25,7 +49,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "readTime": "2 min read"
   },
   {
-    "id": "2",
+    "id": "3",
     "slug": "my-coding-journey",
     "title": "My Coding Journey: From HTML to AI Agents",
     "excerpt": "It all started when I was 14. A curiosity about how websites work led me to open Notepad and type my first <html> tag. That simple act of creating something ...",
@@ -46,7 +70,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "readTime": "2 min read"
   },
   {
-    "id": "3",
+    "id": "4",
     "slug": "the-daily-life-of-an-opus-addict",
     "title": "The Daily Life of an Opus Addict",
     "excerpt": "I recently asked Copilot, or more specifically, Claude Opus, to take a look at my portfolio website. Sounds like a pretty standard developer thing to do, rig...",

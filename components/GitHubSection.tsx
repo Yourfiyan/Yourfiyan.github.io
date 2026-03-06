@@ -151,8 +151,11 @@ const GitHubSection: React.FC = () => {
               <div className="relative shrink-0">
                 <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-green-400 to-emerald-600 animate-spin-slow opacity-60 blur-sm scale-110" />
                 <img
-                  src={profile.avatar_url}
+                  src={`${profile.avatar_url}&s=224`}
                   alt={profile.name ?? profile.login}
+                  width={112}
+                  height={112}
+                  loading="lazy"
                   className="w-24 h-24 md:w-28 md:h-28 rounded-full relative z-10 ring-4 ring-slate-900"
                 />
               </div>

@@ -7,6 +7,9 @@
     "dev": "vite",
     "build": "node build-blogs.cjs && node build-sitemap.cjs && vite build",
     "preview": "vite preview",
+    "deploy:github": "node deploy.cjs github",
+    "deploy:ftp": "node deploy.cjs ftp",
+    "deploy:both": "node deploy.cjs both",
     "blogs": "node build-blogs.cjs",
     "blog:generate": "node generate-blog.cjs",
     "blog:dry": "node generate-blog.cjs --dry",
@@ -20,9 +23,13 @@
     "react-router-dom": "6.22.3"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.27",
     "basic-ftp": "^5.2.0",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.1",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }

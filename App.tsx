@@ -1,26 +1,28 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import BackgroundBeams from './components/BackgroundBeams';
 import Navbar from './components/Navbar';
 import PageTransition from './components/PageTransition';
 import Home from './pages/Home';
-import ContactPage from './pages/ContactPage';
-import ProjectsPage from './pages/ProjectsPage';
-import CertificatesPage from './pages/CertificatesPage';
-import CustomerSupportPage from './pages/CustomerSupportPage';
-import CalculatoReadyPage from './pages/CalculatoReadyPage';
-import PocketphonePage from './pages/PocketphonePage';
-import LabsPage from './pages/LabsPage';
-import BlogPage from './pages/BlogPage';
-import BlogPostPage from './pages/BlogPostPage';
-import NotFoundPage from './pages/NotFoundPage';
+
+const ContactPage = React.lazy(() => import('./pages/ContactPage'));
+const ProjectsPage = React.lazy(() => import('./pages/ProjectsPage'));
+const CertificatesPage = React.lazy(() => import('./pages/CertificatesPage'));
+const CustomerSupportPage = React.lazy(() => import('./pages/CustomerSupportPage'));
+const CalculatoReadyPage = React.lazy(() => import('./pages/CalculatoReadyPage'));
+const PocketphonePage = React.lazy(() => import('./pages/PocketphonePage'));
+const LabsPage = React.lazy(() => import('./pages/LabsPage'));
+const BlogPage = React.lazy(() => import('./pages/BlogPage'));
+const BlogPostPage = React.lazy(() => import('./pages/BlogPostPage'));
+const NotFoundPage = React.lazy(() => import('./pages/NotFoundPage'));
 
 const AnimatedRoutes: React.FC = () => {
   const location = useLocation();
   return (
     <AnimatePresence mode="wait">
       <div key={location.pathname}>
+      <Suspense fallback={<div className="min-h-screen" />}>
       <Routes location={location}>
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/projects" element={<PageTransition><ProjectsPage /></PageTransition>} />
@@ -34,6 +36,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFoundPage /></PageTransition>} />
       </Routes>
+      </Suspense>
       </div>
     </AnimatePresence>
   );

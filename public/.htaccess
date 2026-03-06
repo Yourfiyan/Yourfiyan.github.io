@@ -1,0 +1,12 @@
+# SPA fallback — rewrite all non-file/non-directory requests to index.html
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # If the requested resource exists as a file or directory, serve it
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # Otherwise rewrite to index.html for SPA routing
+  RewriteRule ^ index.html [QSA,L]
+</IfModule>

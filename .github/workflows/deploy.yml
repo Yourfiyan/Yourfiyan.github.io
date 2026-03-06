@@ -35,9 +35,12 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npx vite build
+        run: npm run build
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Swap sitemap for GitHub domain
+        run: cp dist/sitemap-github.xml dist/sitemap.xml
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

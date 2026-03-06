@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node build-blogs.cjs && vite build",
+    "build": "node build-blogs.cjs && node build-sitemap.cjs && vite build",
     "preview": "vite preview",
     "blogs": "node build-blogs.cjs",
     "blog:generate": "node generate-blog.cjs",

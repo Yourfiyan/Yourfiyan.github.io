@@ -17,7 +17,6 @@ dist-ssr
 
 # Local tooling (not needed to build the site)
 dashboard.cjs
-build-blogs.cjs
 generate-blog.cjs
 blog-draft.md
 blogs/

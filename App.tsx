@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import BackgroundBeams from './components/BackgroundBeams';
 import Navbar from './components/Navbar';
@@ -41,7 +41,7 @@ const AnimatedRoutes: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <main className="relative min-h-screen bg-background text-foreground selection:bg-indigo-500/30">
         <BackgroundBeams />
         
@@ -49,7 +49,7 @@ const App: React.FC = () => {
         
         <AnimatedRoutes />
       </main>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 

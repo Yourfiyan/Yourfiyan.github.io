@@ -1,0 +1,9 @@
+# robots.txt — yourfiyan portfolio
+# Works on any domain this site is hosted on
+
+User-agent: *
+Allow: /
+Disallow: /live/pocketphone/admin/
+Disallow: /live/music_player/
+
+Sitemap: /sitemap.xml

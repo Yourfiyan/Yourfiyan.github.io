@@ -17,7 +17,7 @@
     <meta property="og:title" content="Syed Sufiyan Hamza | Student Developer Portfolio" />
     <meta property="og:description" content="Projects, blog posts, and experiments by a 17-year-old developer from Assam, India." />
     <meta property="og:url" content="https://yourfiyan.is-a.dev/" />
-    <meta property="og:image" content="/assets/image/favicon(highres).png" />
+    <meta property="og:image" content="/assets/image/favicon%28highres%29.png" />
     <meta property="og:site_name" content="yourfiyan" />
     <meta property="og:locale" content="en_US" />
 
@@ -25,11 +25,11 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Syed Sufiyan Hamza | Student Developer" />
     <meta name="twitter:description" content="Projects, blog posts, and experiments by a 17-year-old developer from Assam, India." />
-    <meta name="twitter:image" content="/assets/image/favicon(highres).png" />
+    <meta name="twitter:image" content="/assets/image/favicon%28highres%29.png" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/image/favicon.png" />
-    <link rel="apple-touch-icon" href="/assets/image/favicon(highres).png" />
+    <link rel="apple-touch-icon" href="/assets/image/favicon%28highres%29.png" />
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -92,6 +92,9 @@
             },
             animation: {
               'blob': 'blob 7s infinite',
+              'blob-delay-2': 'blob 7s infinite 2s',
+              'blob-delay-4': 'blob 7s infinite 4s',
+              'shimmer': 'shimmer 1.5s infinite',
             },
             keyframes: {
               blob: {
@@ -99,6 +102,10 @@
                 '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
                 '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
                 '100%': { transform: 'translate(0px, 0px) scale(1)' },
+              },
+              shimmer: {
+                '0%': { transform: 'translateX(-100%)' },
+                '100%': { transform: 'translateX(100%)' },
               }
             }
           },

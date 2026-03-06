@@ -6,10 +6,10 @@
 
 ## Project Overview
 
-- **Stack**: React + TypeScript + Vite (SPA with HashRouter)
-- **Domain**: `yourfiyan.me`
-- **Hosting**: InfinityFree (free static/PHP hosting)
-- **Routing**: Hash-based (`/#/path`) — no server-side rewrites needed
+- **Stack**: React + TypeScript + Vite (SPA with BrowserRouter)
+- **Domains**: `yourfiyan.me` (InfinityFree) and `yourfiyan.is-a.dev` (GitHub Pages)
+- **Hosting**: InfinityFree (FTP) + GitHub Pages (Actions)
+- **Routing**: Clean URLs via BrowserRouter — `.htaccess` handles rewrites on InfinityFree, `404.html` handles redirects on GitHub Pages
 
 ---
 
@@ -21,8 +21,9 @@ npm run build
 ```
 
 - Output: `dist/` folder
-- Vite config uses `base: './'` (relative paths), so the build works in any subdirectory
+- Vite config uses `base: '/'` (root-relative paths)
 - The `dist/` folder contains everything needed for deployment: `index.html`, JS bundle, and all `public/` assets copied as-is
+- Build also generates `sitemap.xml` (yourfiyan.me) and `sitemap-github.xml` (yourfiyan.is-a.dev)
 
 ---
 
@@ -47,7 +48,8 @@ Use the **dashboard** (`node dashboard.cjs`) to build and deploy — it handles 
 
 - **InfinityFree FTP is SLOW** (~1 file per 10-30 seconds). A full deploy takes **30-60 minutes**.
 - **The remote path is `/yourfiyan.me/htdocs/`** — the `index.html` should land at `/yourfiyan.me/htdocs/index.html`.
-- **HashRouter means no `.htaccess` needed.** All routes are `/#/path`.
+- **BrowserRouter with `.htaccess`** handles SPA routing on InfinityFree.
+- **`404.html`** redirects all paths to `index.html` on GitHub Pages.
 - **Changes take a few minutes to propagate** on InfinityFree after upload.
 
 ---

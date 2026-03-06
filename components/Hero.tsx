@@ -80,7 +80,7 @@ const Hero: React.FC = () => {
                 to="/projects"
                 className="group relative px-8 py-4 bg-white text-black font-semibold rounded-full overflow-hidden w-full sm:w-auto hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300"
             >
-                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-shimmer" />
                 <span className="relative flex items-center justify-center gap-2">
                     View My Work <ArrowRight size={18} />
                 </span>

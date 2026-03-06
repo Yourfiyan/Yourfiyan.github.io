@@ -8,4 +8,4 @@ Disallow: /live/music_player/
 
 # Sitemaps for both domains
 Sitemap: https://yourfiyan.me/sitemap.xml
-Sitemap: https://yourfiyan.is-a.dev/sitemap-github.xml
+Sitemap: https://yourfiyan.is-a.dev/sitemap.xml

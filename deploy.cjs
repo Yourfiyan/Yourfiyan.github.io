@@ -121,24 +121,31 @@ async function deployFTP() {
     console.log("  ✓ FTP connected.");
     await client.ensureDir(FTP_REMOTE);
 
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    async function connectFTP() {
+      await client.access({ host: FTP_HOST, user: FTP_USER, password: FTP_PASS, secure: false });
+    }
+
     let uploaded = 0;
     let failed = 0;
     for (const file of files) {
       const remotePath = `${FTP_REMOTE}/${file.relative}`.replace(/\\/g, "/");
       const remoteDir = path.posix.dirname(remotePath);
       let success = false;
-      for (let attempt = 1; attempt <= 3 && !success; attempt++) {
+      for (let attempt = 1; attempt <= 5 && !success; attempt++) {
         try {
           await client.ensureDir(remoteDir);
           await client.uploadFrom(file.absolute, remotePath);
           success = true;
           uploaded++;
         } catch (e) {
-          if (attempt < 3) {
-            console.log(`  ⟳ Retry ${attempt}/3: ${file.relative}`);
-            try {
-              await client.access({ host: FTP_HOST, user: FTP_USER, password: FTP_PASS, secure: false });
-            } catch {}
+          if (attempt < 5) {
+            const delay = attempt * 3000; // 3s, 6s, 9s, 12s backoff
+            console.log(`  ⟳ Retry ${attempt}/5: ${file.relative} (waiting ${delay / 1000}s)`);
+            await sleep(delay);
+            try { client.close(); } catch {}
+            try { await connectFTP(); } catch {}
           } else {
             failed++;
             console.error(`  ✗ Failed: ${file.relative} — ${e.message}`);

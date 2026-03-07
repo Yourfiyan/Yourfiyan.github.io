@@ -50,6 +50,31 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     "id": "3",
+    "slug": "how-i-registered-a-government-verified-dev-business-at-16-and-learned-how-credibility-actually-works",
+    "title": "How I Registered a Government-Verified Dev Business at 16 (and Learned How Credibility Actually Works)",
+    "excerpt": "This whole side quest started with a pretty simple idea: I wanted something official for my portfolio. Not just a list of projects and GitHub commits, but an...",
+    "content": [
+      "This whole side quest started with a pretty simple idea: I wanted something official for my portfolio. Not just a list of projects and GitHub commits, but an actual certificate that says, \"Yes, this person writes software.\" So, at sixteen, I decided to register my freelance work under India’s MSME system, hoping to get an official backing for my dev alias, yourfiyan, and add that shiny government seal to my growing portfolio.",
+      "Easy, right? Or so I thought. The moment you open an Indian government portal, you quickly realize these forms are designed for factories and established corporations, not a 16-year-old writing React apps on an HP laptop. The first wave of confusion hit almost immediately as the form started asking about directors, incorporation documents, and legal structures—meanwhile, I was just trying to register a one-person dev alias. After a bit of frantic digging and some real-time translation help from an AI assistant, I discovered the magic option: \"proprietary,\" basically the legal equivalent of \"it's just me.\"",
+      "Once that initial hurdle was cleared, the next challenge appeared: NIC codes. If you've never seen them, these are how the government categorizes every possible job, and every business in the country has to choose one. Searching for \"computer programming\" gave me suggestions that ranged from straightforward software development to things that sounded suspiciously like television broadcasting. Eventually, I found the 62 series, which covers software and programming, and suddenly the options looked familiar: writing and modifying software, web-page designing. My AI collaborator basically suggested, \"Why not both?\" So, I selected both, and suddenly the form stopped looking like paperwork and started looking like an RPG skill tree.",
+      "My tiny one-person dev setup now officially had two business capabilities: writing software and designing websites, which honestly describes about 90% of freelance dev work anyway. The funniest moment came later when the form asked about \"industrial investment,\" specifically the written-down value of plant and machinery. For a second, I actually paused, because technically my entire \"industrial infrastructure\" is just my laptop. So I typed zero, and the portal happily accepted it. Apparently, a zero-rupee industrial setup is a perfectly valid business configuration.",
+      "After navigating the rest of the form—addresses, bank details, and employment numbers (one employee: me)—the application finally submitted. Then, something unexpected happened: the certificate generated. Official government seals, QR codes, and my alias printed right there next to the Ministry of Micro, Small and Medium Enterprises. It was a surreal moment for a solo developer working out of a bedroom in Titabar, Assam.",
+      "That's when something clicked for me. Freelancing isn't just about writing code; the code proves you can build things, but credibility is what convinces people to trust you with real work. A portfolio shows what you've made, but a government registration shows you're operating like a professional. So now my portfolio isn't just a list of projects anymore; it also includes a verified micro-enterprise registration: UDYAM-AS-15-0033357, which, for a solo dev, is surprisingly powerful.",
+      "The most interesting part of this whole process wasn’t just getting the certificate, though; it was the workflow itself. Instead of struggling through bureaucratic language alone, I worked alongside an AI assistant translating the form in real-time. Sometimes it sounded like a corporate lawyer explaining compliance rules, other times it felt like a developer friend helping debug a confusing UI. Either way, the combination worked: a student developer, a laptop, and an AI collaborator navigating a government registration system together. Honestly, that might just be the most modern developer workflow imaginable."
+    ],
+    "date": "March 2026",
+    "tags": [
+      "Freelancing",
+      "MSME",
+      "Civic Tech",
+      "Government Portals",
+      "AI",
+      "Developer Life"
+    ],
+    "readTime": "3 min read"
+  },
+  {
+    "id": "4",
     "slug": "my-coding-journey",
     "title": "My Coding Journey: From HTML to AI Agents",
     "excerpt": "It all started when I was 14. A curiosity about how websites work led me to open Notepad and type my first <html> tag. That simple act of creating something ...",
@@ -70,7 +95,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "readTime": "2 min read"
   },
   {
-    "id": "4",
+    "id": "5",
     "slug": "the-daily-life-of-an-opus-addict",
     "title": "The Daily Life of an Opus Addict",
     "excerpt": "I recently asked Copilot, or more specifically, Claude Opus, to take a look at my portfolio website. Sounds like a pretty standard developer thing to do, rig...",

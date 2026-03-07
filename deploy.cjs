@@ -112,7 +112,7 @@ async function deployFTP() {
   const files = collectFiles(DIST);
   console.log(`  Found ${files.length} files to upload.`);
 
-  const client = new ftp.Client(30000);
+  const client = new ftp.Client(60000);
   client.ftp.verbose = false;
 
   try {
@@ -126,16 +126,27 @@ async function deployFTP() {
     for (const file of files) {
       const remotePath = `${FTP_REMOTE}/${file.relative}`.replace(/\\/g, "/");
       const remoteDir = path.posix.dirname(remotePath);
-      try {
-        await client.ensureDir(remoteDir);
-        await client.uploadFrom(file.absolute, remotePath);
-        uploaded++;
-        if (uploaded % 10 === 0 || uploaded === files.length) {
-          console.log(`  [${uploaded}/${files.length}] uploaded...`);
+      let success = false;
+      for (let attempt = 1; attempt <= 3 && !success; attempt++) {
+        try {
+          await client.ensureDir(remoteDir);
+          await client.uploadFrom(file.absolute, remotePath);
+          success = true;
+          uploaded++;
+        } catch (e) {
+          if (attempt < 3) {
+            console.log(`  ⟳ Retry ${attempt}/3: ${file.relative}`);
+            try {
+              await client.access({ host: FTP_HOST, user: FTP_USER, password: FTP_PASS, secure: false });
+            } catch {}
+          } else {
+            failed++;
+            console.error(`  ✗ Failed: ${file.relative} — ${e.message}`);
+          }
         }
-      } catch (e) {
-        failed++;
-        console.error(`  ✗ Failed: ${file.relative} — ${e.message}`);
+      }
+      if (uploaded % 10 === 0 || uploaded === files.length) {
+        console.log(`  [${uploaded}/${files.length}] uploaded...`);
       }
     }
 

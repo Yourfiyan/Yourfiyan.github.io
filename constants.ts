@@ -110,6 +110,14 @@ export const CERTIFICATES: Certificate[] = [
     date: "Mar 2026",
     certId: "zrt7z5bwq79y",
     link: "/assets/certificates/8-claude-with-anthropic-api.pdf"
+  },
+  {
+    id: 6,
+    title: "MSME Udyam Certificate - Web & Software Services",
+    issuer: "Ministry of MSME, Government of India",
+    date: "Mar 2026",
+    certId: "UDYAM-AS-15-0033357",
+    link: "/assets/certificates/UDYAM-AS-15-0033357.pdf"
   }
 ];
 

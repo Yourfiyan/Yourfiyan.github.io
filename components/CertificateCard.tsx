@@ -10,6 +10,7 @@ function getIssuerAccent(issuer: string): { gradient: string; bg: string; text: 
   if (lower.includes('walmart')) return { gradient: 'from-blue-400 to-blue-600', bg: 'bg-blue-500/15', text: 'text-blue-400', border: 'border-blue-500/30' };
   if (lower.includes('skyscanner')) return { gradient: 'from-cyan-400 to-teal-500', bg: 'bg-cyan-500/15', text: 'text-cyan-400', border: 'border-cyan-500/30' };
   if (lower.includes('lloyds')) return { gradient: 'from-emerald-400 to-green-500', bg: 'bg-emerald-500/15', text: 'text-emerald-400', border: 'border-emerald-500/30' };
+  if (lower.includes('msme')) return { gradient: 'from-indigo-400 to-teal-500', bg: 'bg-indigo-500/15', text: 'text-indigo-400', border: 'border-indigo-500/30' };
   return { gradient: 'from-purple-400 to-pink-500', bg: 'bg-purple-500/15', text: 'text-purple-400', border: 'border-purple-500/30' };
 }
 

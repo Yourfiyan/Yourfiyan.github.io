@@ -7,11 +7,11 @@ export const HERO_CONTENT = {
   headline: "Hi, I'm",
   name: "Syed Sufiyan Hamza",
   rotatingText: ["Student Developer", "Tech Guy", "Linux Dude", "Problem Solver"],
-  intro: "A passionate Class 10 student developer from Titabar, Assam. I build innovative solutions and experiment with technology to solve real-world problems."
+  intro: "A passionate Class 11 student developer from Titabar, Assam. I build innovative solutions and experiment with technology to solve real-world problems."
 };
 
 export const ABOUT_CONTENT = {
-  bio1: "Hello! I'm a 17-year-old tech enthusiast and developer from Titabar, Assam. For over 3 years, I've been exploring the realms of technology, building everything from personal productivity tools to AI-powered scripts.",
+  bio1: "Hello! I'm an 18-year-old tech enthusiast and developer from Titabar, Assam. For over 3 years, I've been exploring the realms of technology, building everything from personal productivity tools to AI-powered scripts.",
   bio2: "My journey began with simple HTML pages and has evolved into creating applications and experimenting across Windows and Linux environments. I'm passionate about solving problems through code and constantly learning new technologies.",
   skills: ["HTML", "CSS", "JavaScript", "Python", "Linux", "Problem Solving", "Git & GitHub"]
 };
@@ -160,6 +160,6 @@ export const TIMELINE_EVENTS = [
   {
     year: "2026",
     title: "Now",
-    description: "Class 10 student, active developer, and constant learner — building projects, writing about tech, and pushing boundaries one commit at a time."
+    description: "Class 11 student, active developer, and constant learner — building projects, writing about tech, and pushing boundaries one commit at a time."
   }
 ];

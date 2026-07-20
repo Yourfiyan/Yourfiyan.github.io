@@ -11,12 +11,16 @@ const PocketphonePage: React.FC = () => {
       tags={['PHP', 'MySQL', 'JavaScript', 'Security']}
       demoLink={resolveLiveLink('/live/pocketphone/admin/index.php', true)}
     >
-       {/* Hero Image Placeholder */}
-       <div className="w-full h-64 md:h-96 bg-gradient-to-br from-purple-900/40 to-pink-900/40 rounded-3xl border border-white/10 flex items-center justify-center overflow-hidden relative">
-          <div className="z-10 text-center p-6">
-              <p className="text-slate-300">Admin Dashboard Screenshot Placeholder</p>
-              <p className="text-slate-500 text-sm">(assets/image/pocketphone-admin.png)</p>
-          </div>
+       {/* Hero screenshot */}
+       <div className="w-full rounded-3xl border border-white/10 overflow-hidden bg-gradient-to-br from-purple-900/40 to-pink-900/40">
+          <img
+              src="/assets/image/pocketphone-admin.webp"
+              alt="Pocketphone admin dashboard showing the product management table"
+              width={1280}
+              height={615}
+              loading="lazy"
+              className="w-full h-auto"
+          />
       </div>
 
       {/* Feature Grid */}

@@ -11,15 +11,16 @@ const CalculatoReadyPage: React.FC = () => {
       githubLink="https://github.com/Yourfiyan/calculatoready"
       demoLink="/live/calc/index.html"
     >
-      {/* Hero Image Placeholder */}
-      <div className="w-full h-64 md:h-96 bg-gradient-to-br from-emerald-900/40 to-cyan-900/40 rounded-3xl border border-white/10 flex items-center justify-center overflow-hidden relative">
-          <div className="absolute inset-0 flex items-center justify-center text-slate-500 opacity-30 text-9xl font-bold select-none">
-              +/-
-          </div>
-          <div className="z-10 text-center p-6">
-              <p className="text-slate-300">Project Screenshot Placeholder</p>
-              <p className="text-slate-500 text-sm">(assets/image/calc.png)</p>
-          </div>
+      {/* Hero screenshot */}
+      <div className="w-full rounded-3xl border border-white/10 overflow-hidden bg-gradient-to-br from-emerald-900/40 to-cyan-900/40">
+          <img
+              src="/assets/image/calc.webp"
+              alt="CalculatoReady web calculator interface"
+              width={1280}
+              height={572}
+              loading="lazy"
+              className="w-full h-auto"
+          />
       </div>
 
       {/* Overview */}

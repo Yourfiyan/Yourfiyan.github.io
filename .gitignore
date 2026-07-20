@@ -37,3 +37,6 @@ __pycache__/
 *.njsproj
 *.sln
 *.sw?
+
+# Server-only PHP secrets (uploaded once via FTP, never committed)
+db_config.local.php

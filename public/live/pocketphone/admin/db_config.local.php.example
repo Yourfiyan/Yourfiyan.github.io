@@ -1,0 +1,12 @@
+<?php
+/*
+ * Copy this file to db_config.local.php on the SERVER ONLY and fill in
+ * the real credentials. db_config.local.php is gitignored and must never
+ * be committed.
+ */
+
+define('DB_SERVER', 'sqlXXX.infinityfree.com');
+define('DB_USERNAME', 'ifX_XXXXXXXX');
+define('DB_PASSWORD', 'CHANGE_ME');
+define('DB_NAME', 'ifX_XXXXXXXX_dbname');
+?>

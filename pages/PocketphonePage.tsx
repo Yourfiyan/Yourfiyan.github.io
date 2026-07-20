@@ -1,13 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ProjectLayout from '../components/ProjectLayout';
 import { resolveLiveLink } from '../utils/liveDemo';
 import { Shield, Users, Smartphone, Key, Lock, Database } from 'lucide-react';
 
 const PocketphonePage: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <ProjectLayout
       title="Pocketphone"

@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../blogData';
 
 const BlogPage: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
   const allTags = [...new Set(BLOG_POSTS.flatMap(post => post.tags))];

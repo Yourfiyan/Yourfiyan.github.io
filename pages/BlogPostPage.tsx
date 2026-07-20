@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowLeft, Tag } from 'lucide-react';
 import { Link, useParams, Navigate } from 'react-router-dom';
@@ -7,10 +7,6 @@ import { BLOG_POSTS } from '../blogData';
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const post = BLOG_POSTS.find(p => p.slug === slug);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [slug]);
 
   if (!post) {
     return <Navigate to="/blog" replace />;

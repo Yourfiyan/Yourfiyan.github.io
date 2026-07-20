@@ -19,11 +19,15 @@ const NotFoundPage = React.lazy(() => import('./pages/NotFoundPage'));
 
 const AnimatedRoutes: React.FC = () => {
   const location = useLocation();
+  // Canonical framer-motion + react-router pattern: <Routes> is the direct,
+  // keyed child of AnimatePresence so exit animations actually run before
+  // the next page mounts (mode="wait"). A plain wrapper <div> here breaks
+  // exit tracking. Suspense stays OUTSIDE so lazy-loading a page doesn't
+  // interfere with the presence tree.
   return (
+    <Suspense fallback={<div className="min-h-screen" />}>
     <AnimatePresence mode="wait">
-      <div key={location.pathname}>
-      <Suspense fallback={<div className="min-h-screen" />}>
-      <Routes location={location}>
+      <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/projects" element={<PageTransition><ProjectsPage /></PageTransition>} />
         <Route path="/projects/customer-support" element={<PageTransition><CustomerSupportPage /></PageTransition>} />
@@ -36,9 +40,8 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFoundPage /></PageTransition>} />
       </Routes>
-      </Suspense>
-      </div>
     </AnimatePresence>
+    </Suspense>
   );
 };
 

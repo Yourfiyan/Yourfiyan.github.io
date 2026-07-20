@@ -1,14 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Terminal } from 'lucide-react';
 import { LABS } from '../constants';
 import { resolveLiveLink } from '../utils/liveDemo';
 
 const LabsPage: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <div className="pt-32 pb-20 container mx-auto px-6 relative z-10">
         {/* Header */}

@@ -1,14 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Award, CheckCircle, BookOpen } from 'lucide-react';
 import Certificates from '../components/Certificates';
 import { CERTIFICATES } from '../constants';
 
 const CertificatesPage: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   // Compute unique issuers
   const issuers = new Set(CERTIFICATES.map((c) => c.issuer)).size;
 

@@ -1,15 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import { Link } from 'react-router-dom';
 
 const ProjectsPage: React.FC = () => {
-    // Ensure scroll to top on mount
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
     return (
         <div className="pt-32 pb-20 container mx-auto px-6 relative z-10">
             {/* Header */}

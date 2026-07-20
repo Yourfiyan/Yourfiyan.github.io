@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import Hero from '../components/Hero';
 
 const AboutBento = React.lazy(() => import('../components/AboutBento'));
@@ -8,11 +8,6 @@ const GitHubSection = React.lazy(() => import('../components/GitHubSection'));
 const Contact = React.lazy(() => import('../components/Contact'));
 
 const Home: React.FC = () => {
-  // Ensure we scroll to top when mounting Home
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <div className="flex flex-col w-full">
       <Hero />

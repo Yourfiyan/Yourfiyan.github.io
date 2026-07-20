@@ -1,12 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ProjectLayout from '../components/ProjectLayout';
 import { Filter, Search, PenTool, CheckCircle, Zap, PiggyBank, Clock, Database, Server, Code2 } from 'lucide-react';
 
 const CustomerSupportPage: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <ProjectLayout
       title="Customer Support AI Agent"

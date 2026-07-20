@@ -4,6 +4,10 @@ import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { HERO_CONTENT } from '../constants';
 
+// Client-side <Link> with framer-motion props — a raw <a href> here caused a
+// full page reload (and a 404→redirect hop on GitHub Pages).
+const MotionLink = motion.create(Link);
+
 const Hero: React.FC = () => {
   const [index, setIndex] = useState(0);
 
@@ -33,8 +37,8 @@ const Hero: React.FC = () => {
               Available for new projects
             </motion.div>
 
-            <motion.a
-              href="/certificates"
+            <MotionLink
+              to="/certificates"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 }}
@@ -42,7 +46,7 @@ const Hero: React.FC = () => {
             >
               <ShieldCheck size={14} />
               Govt-Registered Micro-Enterprise (MSME)
-            </motion.a>
+            </MotionLink>
           </div>
 
           {/* Headline */}

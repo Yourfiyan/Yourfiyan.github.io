@@ -1,12 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ProjectLayout from '../components/ProjectLayout';
 import { Layers, MousePointer, Smartphone, Zap, CheckCircle, Code } from 'lucide-react';
 
 const CalculatoReadyPage: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <ProjectLayout
       title="Calculato Ready"

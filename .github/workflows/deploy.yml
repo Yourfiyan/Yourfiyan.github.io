@@ -36,11 +36,17 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Swap sitemap for GitHub domain
-        run: cp dist/sitemap-github.xml dist/sitemap.xml
+        run: |
+          cp dist/sitemap-github.xml dist/sitemap.xml
+          rm dist/sitemap-github.xml
+
+      # PHP does not execute on GitHub Pages — these sub-apps would be
+      # served as raw source (including admin/ files). They live on
+      # yourfiyan.me only; the SPA links to them cross-domain.
+      - name: Strip PHP-backed sub-apps from static artifact
+        run: rm -rf dist/live/pocketphone dist/live/music_player
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

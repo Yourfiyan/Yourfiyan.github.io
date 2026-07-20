@@ -109,7 +109,11 @@ async function deployFTP() {
     return result;
   }
 
-  const files = collectFiles(DIST);
+  // sitemap-github.xml is only meaningful on the GitHub Pages domain —
+  // don't publish it to yourfiyan.me.
+  const files = collectFiles(DIST).filter(
+    (f) => f.relative !== "sitemap-github.xml"
+  );
   console.log(`  Found ${files.length} files to upload.`);
 
   const client = new ftp.Client(60000);

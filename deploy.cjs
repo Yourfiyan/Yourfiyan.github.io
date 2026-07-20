@@ -65,8 +65,22 @@ async function deployGitHub() {
     console.log("  ✓ Copied sitemap-github.xml → dist/sitemap.xml");
   }
 
-  run("git add -A", "Staging all changes");
+  // Only auto-commit files the build itself regenerates. A blanket
+  // `git add -A` used to sweep unrelated work-in-progress into deploy
+  // commits — refuse instead, so the author commits those deliberately.
+  const BUILD_OUTPUTS = ["public/sitemap.xml", "public/sitemap-github.xml", "blogData.ts"];
+  const dirty = execSync("git status --porcelain", { cwd: ROOT })
+    .toString().trim().split("\n").filter(Boolean)
+    .map((l) => l.slice(3).replace(/\\/g, "/"));
+  const unrelated = dirty.filter((f) => !BUILD_OUTPUTS.includes(f));
+  if (unrelated.length) {
+    console.error("  ✗ Uncommitted changes beyond build outputs:");
+    unrelated.forEach((f) => console.error(`      ${f}`));
+    console.error("    Commit or stash them first, then re-run the deploy.");
+    process.exit(1);
+  }
 
+  run(`git add ${BUILD_OUTPUTS.join(" ")}`, "Staging build outputs");
   const status = execSync("git status --porcelain", { cwd: ROOT }).toString().trim();
   const ts = new Date().toISOString().replace("T", " ").slice(0, 16);
   if (status) {

@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import { Link } from 'react-router-dom';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const ProjectsPage: React.FC = () => {
+  usePageMeta('Projects', 'Web apps, AI agents, and tools built by Syed Sufiyan Hamza — from a multi-agent customer support system to PHP inventory management.');
     return (
         <div className="pt-32 pb-20 container mx-auto px-6 relative z-10">
             {/* Header */}

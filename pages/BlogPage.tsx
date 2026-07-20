@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../blogData';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const BlogPage: React.FC = () => {
+  usePageMeta('Blog', 'Thoughts, tutorials, and stories from my journey as a student developer.');
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
   const allTags = [...new Set(BLOG_POSTS.flatMap(post => post.tags))];

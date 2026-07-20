@@ -2,8 +2,10 @@ import React from 'react';
 import ProjectLayout from '../components/ProjectLayout';
 import { resolveLiveLink } from '../utils/liveDemo';
 import { Shield, Users, Smartphone, Key, Lock, Database } from 'lucide-react';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const PocketphonePage: React.FC = () => {
+  usePageMeta('Pocketphone', 'A secure PHP/MySQL phone inventory system with an admin panel, role-based access, and product management.');
   return (
     <ProjectLayout
       title="Pocketphone"

@@ -1,8 +1,10 @@
 import React from 'react';
 import ProjectLayout from '../components/ProjectLayout';
 import { Filter, Search, PenTool, CheckCircle, Zap, PiggyBank, Clock, Database, Server, Code2 } from 'lucide-react';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const CustomerSupportPage: React.FC = () => {
+  usePageMeta('Customer Support AI Agent', 'A production-ready multi-agent customer support system built with Google Gemini AI, FastAPI, and Python.');
   return (
     <ProjectLayout
       title="Customer Support AI Agent"

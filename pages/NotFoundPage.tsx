@@ -2,8 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Home, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const NotFoundPage: React.FC = () => {
+  usePageMeta('Page Not Found');
   return (
     <div className="min-h-screen flex items-center justify-center relative z-10 px-6">
       <div className="text-center max-w-lg">

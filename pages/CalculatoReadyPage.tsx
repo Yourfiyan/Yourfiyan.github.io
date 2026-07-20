@@ -1,8 +1,10 @@
 import React from 'react';
 import ProjectLayout from '../components/ProjectLayout';
 import { Layers, MousePointer, Smartphone, Zap, CheckCircle, Code } from 'lucide-react';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const CalculatoReadyPage: React.FC = () => {
+  usePageMeta('Calculato Ready', 'A responsive web calculator built with vanilla HTML, CSS, and JavaScript — my first web project.');
   return (
     <ProjectLayout
       title="Calculato Ready"

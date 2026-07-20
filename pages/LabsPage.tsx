@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { ExternalLink, Terminal } from 'lucide-react';
 import { LABS } from '../constants';
 import { resolveLiveLink } from '../utils/liveDemo';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const LabsPage: React.FC = () => {
+  usePageMeta('Labs & Experiments', 'Live demos and web experiments — calculator, music player, and more, hosted right on this site.');
   return (
     <div className="pt-32 pb-20 container mx-auto px-6 relative z-10">
         {/* Header */}

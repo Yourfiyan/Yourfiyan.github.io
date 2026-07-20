@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Github, Send, MessageSquare, Clock, Globe } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const ContactPage: React.FC = () => {
+  usePageMeta('Contact', 'Get in touch for freelance web development, Python scripting, or collaboration. Based in Titabar, Assam, India.');
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);

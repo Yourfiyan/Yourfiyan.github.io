@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { Award, CheckCircle, BookOpen } from 'lucide-react';
 import Certificates from '../components/Certificates';
 import { CERTIFICATES } from '../constants';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const CertificatesPage: React.FC = () => {
+  usePageMeta('Certificates', 'Verified certifications from Anthropic, Walmart, Skyscanner, Lloyds Banking Group, and the Government of India MSME registry.');
   // Compute unique issuers
   const issuers = new Set(CERTIFICATES.map((c) => c.issuer)).size;
 

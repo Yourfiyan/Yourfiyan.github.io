@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import Hero from '../components/Hero';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const AboutBento = React.lazy(() => import('../components/AboutBento'));
 const Projects = React.lazy(() => import('../components/Projects'));
@@ -8,6 +9,7 @@ const GitHubSection = React.lazy(() => import('../components/GitHubSection'));
 const Contact = React.lazy(() => import('../components/Contact'));
 
 const Home: React.FC = () => {
+  usePageMeta();  // homepage uses the site-default title/description
   return (
     <div className="flex flex-col w-full">
       <Hero />

@@ -37,12 +37,22 @@ const STATIC_ROUTES = [
 ];
 
 // ── Collect blog slugs ──────────────────────────────────────────
+// Prefer blogs/*.md (local builds); fall back to the committed
+// blogData.ts so CI builds (where blogs/ is gitignored) still emit
+// blog URLs in the sitemap.
 function getBlogSlugs() {
-  if (!fs.existsSync(BLOGS_DIR)) return [];
-  return fs.readdirSync(BLOGS_DIR)
-    .filter(f => f.endsWith('.md') && !f.includes('.backup-'))
-    .map(f => path.basename(f, '.md'))
-    .sort();
+  if (fs.existsSync(BLOGS_DIR)) {
+    return fs.readdirSync(BLOGS_DIR)
+      .filter(f => f.endsWith('.md') && !f.includes('.backup-'))
+      .map(f => path.basename(f, '.md'))
+      .sort();
+  }
+  const dataFile = path.join(__dirname, 'blogData.ts');
+  if (fs.existsSync(dataFile)) {
+    const src = fs.readFileSync(dataFile, 'utf8');
+    return [...src.matchAll(/"slug":\s*"([^"]+)"/g)].map(m => m[1]).sort();
+  }
+  return [];
 }
 
 // ── Build XML ───────────────────────────────────────────────────

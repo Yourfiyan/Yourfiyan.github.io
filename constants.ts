@@ -157,7 +157,7 @@ export const TIMELINE_EVENTS = [
   {
     year: "2025",
     title: "AI & Beyond",
-    description: "Built a multi-agent AI customer support system with Gemini AI and FastAPI. Earned certifications from TCS iON, Anthropic, Walmart, and others."
+    description: "Built a multi-agent AI customer support system with Gemini AI and FastAPI. Earned certifications from Anthropic, Walmart, Skyscanner, and others."
   },
   {
     year: "2026",

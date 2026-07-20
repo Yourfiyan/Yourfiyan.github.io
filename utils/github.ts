@@ -70,12 +70,14 @@ export function getEventDescription(event: {
   type: string;
   repo: { name: string };
   payload?: any;
+  /** Aggregated commit count when consecutive PushEvents were deduped. */
+  totalCommits?: number;
 }): EventDescription {
   const repoName = event.repo.name.split('/').pop() || event.repo.name;
 
   switch (event.type) {
     case 'PushEvent': {
-      const commits = event.payload?._totalCommits ?? event.payload?.commits?.length ?? 0;
+      const commits = event.totalCommits ?? event.payload?.commits?.length ?? 0;
       return {
         icon: 'push',
         text: commits > 0

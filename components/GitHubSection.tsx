@@ -50,25 +50,21 @@ const GitHubSection: React.FC = () => {
     .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
     .slice(0, 6);
 
-  // Deduplicate consecutive events of the same type + repo, then take top 10
-  const recentEvents = (() => {
-    const deduped: (GitHubEvent & { _count?: number })[] = [];
+  // Deduplicate consecutive events of the same type + repo, then take top 10.
+  // Copies are aggregated (never the objects from the hook's cache) and the
+  // commit total is carried in a typed field instead of a payload mutation.
+  type DedupedEvent = GitHubEvent & { count: number; totalCommits: number };
+  const recentEvents: DedupedEvent[] = (() => {
+    const deduped: DedupedEvent[] = [];
     for (const evt of events) {
+      const commits = evt.type === 'PushEvent' ? (evt.payload?.commits?.length ?? 0) : 0;
       const prev = deduped[deduped.length - 1];
       if (prev && prev.type === evt.type && prev.repo.name === evt.repo.name) {
-        prev._count = (prev._count ?? 1) + 1;
-        // For PushEvents, sum up total commits
-        if (evt.type === 'PushEvent') {
-          const prevCommits = prev.payload?.commits?.length ?? 0;
-          const currCommits = evt.payload?.commits?.length ?? 0;
-          if (!prev.payload) prev.payload = {};
-          if (!prev.payload.commits) prev.payload.commits = [];
-          // Extend the commits array so the description shows total
-          prev.payload._totalCommits = (prev.payload._totalCommits ?? prevCommits) + currCommits;
-        }
+        prev.count += 1;
+        prev.totalCommits += commits;
         continue;
       }
-      deduped.push({ ...evt, _count: 1 });
+      deduped.push({ ...evt, count: 1, totalCommits: commits });
     }
     return deduped.slice(0, 10);
   })();
@@ -386,7 +382,7 @@ const GitHubSection: React.FC = () => {
                 >
                   {recentEvents.map((event, idx) => {
                     const desc = getEventDescription(event);
-                    const count = (event as any)._count ?? 1;
+                    const count = event.count;
                     return (
                       <motion.div
                         key={event.id}

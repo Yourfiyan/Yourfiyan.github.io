@@ -13,7 +13,8 @@
     "blogs": "node build-blogs.cjs",
     "blog:generate": "node generate-blog.cjs",
     "blog:dry": "node generate-blog.cjs --dry",
-    "dashboard": "node dashboard.cjs"
+    "dashboard": "node dashboard.cjs",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "framer-motion": "^12.27.5",

@@ -7,7 +7,27 @@
 
 Personal portfolio website for Syed Sufiyan Hamza — built with React, TypeScript, Vite, and Tailwind CSS. Features project showcases, blog system, certificates, and a contact page.
 
-**Live:** [yourfiyan.github.io](https://yourfiyan.github.io)
+**Live:** [yourfiyan.is-a.dev](https://yourfiyan.is-a.dev) (GitHub Pages) · [yourfiyan.me](https://yourfiyan.me) (InfinityFree)
+
+## Dual Deployment
+
+The site deploys to two hosts from the same codebase:
+
+| | GitHub Pages | InfinityFree |
+|---|---|---|
+| Domain | `yourfiyan.is-a.dev` | `yourfiyan.me` |
+| Trigger | push to `main` (Actions) | `npm run deploy:ftp` |
+| SPA routing | `404.html` redirect trick | `.htaccess` rewrite |
+| PHP demos (`/live/`) | stripped from artifact — linked cross-domain | served natively |
+
+The build injects the target domain into canonical/OG tags via the
+`SITE_URL` env var (`__SITE_URL__` placeholders in `index.html`).
+
+> **Note:** `blogs/*.md` and the dashboard tooling (`dashboard.cjs`,
+> `generate-blog.cjs`) are intentionally untracked local tooling. CI
+> builds keep the committed `blogData.ts` as the blog source of truth;
+> the `dashboard`/`blog:generate` npm scripts only work on a machine
+> that has the local tooling.
 
 ## Tech Stack
 

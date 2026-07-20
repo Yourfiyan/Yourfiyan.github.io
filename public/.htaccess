@@ -10,3 +10,24 @@
   # Otherwise rewrite to index.html for SPA routing
   RewriteRule ^ index.html [QSA,L]
 </IfModule>
+
+# ── Security headers ──
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ── Caching ──
+# Vite emits content-hashed bundles under /assets/ — cache those hard.
+# HTML must stay revalidated so deploys show up promptly.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+</IfModule>

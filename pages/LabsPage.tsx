@@ -19,8 +19,8 @@ const LabsPage: React.FC = () => {
                 Labs & <span className="text-gradient">Experiments</span>
             </h1>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
-                A playground for my smaller projects, web experiments, and live demos. 
-                Everything here is hosted live on this domain.
+                A playground for my smaller projects, web experiments, and live demos —
+                all running live and ready to try.
             </p>
         </motion.div>
 

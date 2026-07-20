@@ -90,15 +90,17 @@ const PocketphonePage: React.FC = () => {
         <h2 className="text-2xl font-bold text-white mb-6">Project Structure</h2>
         <div className="bg-black/40 p-6 rounded-xl border border-white/5 overflow-x-auto">
 <pre className="text-sm font-mono text-slate-300 leading-relaxed">{`pocketphone/
-├── index.php          # Front-end
-├── hashed.php         # Utilities
-├── admin/            
+├── index.php          # Storefront
+├── admin/
 │   ├── index.php      # Dashboard
 │   ├── add_product.php
+│   ├── edit_product.php
+│   ├── delete_product.php
 │   ├── auth_check.php # Middleware
-│   ├── db_config.php  
-│   └── login.php      
-└── uploads/           # Images`}</pre>
+│   ├── csrf.php       # CSRF tokens
+│   ├── db_config.php  # Loads server-only credentials
+│   └── login.php
+└── uploads/           # Images (script execution blocked)`}</pre>
         </div>
       </section>
     </ProjectLayout>

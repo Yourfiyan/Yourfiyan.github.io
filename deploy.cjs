@@ -30,6 +30,10 @@ const FTP_HOST = "ftpupload.net";
 const FTP_USER = "if0_40152047";
 const FTP_REMOTE = "/yourfiyan.me/htdocs";
 const FTP_PASS = loadEnv("FTP_PASSWORD") || "";
+// Set FTP_SECURE=true in .env.local to use explicit FTPS (encrypted
+// credentials in transit). Left opt-in because InfinityFree TLS support
+// has to be verified once before flipping the default.
+const FTP_SECURE = (loadEnv("FTP_SECURE") || "").toLowerCase() === "true";
 
 function run(cmd, label) {
   console.log(`\n── ${label} ──`);
@@ -121,14 +125,14 @@ async function deployFTP() {
 
   try {
     console.log(`  Connecting to ${FTP_HOST}...`);
-    await client.access({ host: FTP_HOST, user: FTP_USER, password: FTP_PASS, secure: false });
+    await client.access({ host: FTP_HOST, user: FTP_USER, password: FTP_PASS, secure: FTP_SECURE });
     console.log("  ✓ FTP connected.");
     await client.ensureDir(FTP_REMOTE);
 
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
     async function connectFTP() {
-      await client.access({ host: FTP_HOST, user: FTP_USER, password: FTP_PASS, secure: false });
+      await client.access({ host: FTP_HOST, user: FTP_USER, password: FTP_PASS, secure: FTP_SECURE });
     }
 
     let uploaded = 0;

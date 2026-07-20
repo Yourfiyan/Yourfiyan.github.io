@@ -61,7 +61,7 @@ const Hero: React.FC = () => {
           </motion.h1>
 
           {/* Rotating Text */}
-          <div className="h-12 md:h-16 overflow-hidden mb-6 flex justify-center items-center">
+          <div className="h-12 md:h-16 overflow-hidden mb-6 flex justify-center items-center" aria-hidden="true">
              <AnimatePresence mode='wait'>
                 <motion.span
                     key={index}

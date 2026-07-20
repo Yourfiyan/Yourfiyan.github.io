@@ -189,3 +189,41 @@
     stroke 300ms ease,
     opacity 300ms ease !important;
 }
+
+/* ── Reduced motion: disable decorative animation for users who ask ── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-blob,
+  .animate-blob-delay-2,
+  .animate-blob-delay-4,
+  .animate-shimmer,
+  .animate-ping,
+  .animate-spin-slow,
+  .animate-pulse {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Skip link (visible only when focused) ── */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  font-weight: 600;
+  transition: top 150ms ease;
+}
+.skip-link:focus {
+  top: 1rem;
+}

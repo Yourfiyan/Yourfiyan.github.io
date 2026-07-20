@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, MotionConfig } from 'framer-motion';
 import BackgroundBeams from './components/BackgroundBeams';
 import Navbar from './components/Navbar';
 import PageTransition from './components/PageTransition';
@@ -48,13 +48,20 @@ const AnimatedRoutes: React.FC = () => {
 const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <main className="relative min-h-screen bg-background text-foreground selection:bg-indigo-500/30">
+      {/* reducedMotion="user" makes every framer-motion animation respect
+          the OS prefers-reduced-motion setting (transform/layout animations
+          are skipped; opacity still animates). CSS keyframes are handled
+          separately in index.css. */}
+      <MotionConfig reducedMotion="user">
+      <a href="#main-content" className="skip-link">Skip to content</a>
+      <main id="main-content" className="relative min-h-screen bg-background text-foreground selection:bg-indigo-500/30">
         <BackgroundBeams />
         
         <Navbar />
         
         <AnimatedRoutes />
       </main>
+      </MotionConfig>
     </BrowserRouter>
   );
 };

@@ -86,6 +86,8 @@ const Navbar: React.FC = () => {
               className="text-white p-2"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -100,6 +102,7 @@ const Navbar: React.FC = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            id="mobile-menu"
             className="absolute top-24 left-4 right-4 p-6 glass-card rounded-2xl md:hidden flex flex-col gap-4 z-50"
           >
             {NAV_LINKS.map(link => (

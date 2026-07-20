@@ -9,10 +9,12 @@ const ContactPage: React.FC = () => {
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError(null);
     
     try {
       const response = await fetch("https://formspree.io/f/xrbkkgbj", {
@@ -33,10 +35,10 @@ const ContactPage: React.FC = () => {
         setSubmitted(true);
         setFormState({ name: '', email: '', subject: '', message: '' });
       } else {
-        alert("Oops! There was a problem sending your message. Please try again or email me directly.");
+        setSubmitError("There was a problem sending your message. Please try again, or email me directly.");
       }
     } catch (error) {
-      alert("Oops! There was a problem sending your message. Please connect with me on LinkedIn or email me directly.");
+      setSubmitError("Couldn't reach the message service. Please check your connection or email me directly.");
     } finally {
       setIsSubmitting(false);
     }
@@ -92,6 +94,14 @@ const ContactPage: React.FC = () => {
                 </div>
             ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
+                    {submitError && (
+                        <div role="alert" className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+                            {submitError}{' '}
+                            <a href={`mailto:${CONTACT_INFO.email}`} className="underline underline-offset-2 hover:text-red-200">
+                                {CONTACT_INFO.email}
+                            </a>
+                        </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
                             <label htmlFor="name" className="text-sm font-medium text-slate-400">Name</label>

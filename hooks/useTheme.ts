@@ -25,7 +25,10 @@ export function useTheme() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const userHasChosen = useRef(localStorage.getItem('theme') !== null);
 
-  // Apply the theme class + data-attribute and persist
+  // Apply the theme class + data-attribute; persist ONLY an explicit choice.
+  // Unconditional persistence froze the OS preference into localStorage on
+  // first visit, so "follow the system theme until the user picks one"
+  // stopped working after a single page load.
   useEffect(() => {
     const root = document.documentElement;
     if (theme === 'dark') {
@@ -34,7 +37,9 @@ export function useTheme() {
       root.classList.remove('dark');
     }
     root.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    if (userHasChosen.current) {
+      localStorage.setItem('theme', theme);
+    }
   }, [theme]);
 
   // Listen for OS-level preference changes while the page is open.

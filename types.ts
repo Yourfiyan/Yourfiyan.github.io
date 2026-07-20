@@ -27,6 +27,8 @@ export interface Lab {
   link: string;
   tags: string[];
   icon: LucideIcon;
+  /** True when the demo needs server-side PHP — only available on yourfiyan.me (InfinityFree). */
+  requiresPhp?: boolean;
 }
 
 export interface NavLink {

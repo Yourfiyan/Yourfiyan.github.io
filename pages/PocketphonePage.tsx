@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import ProjectLayout from '../components/ProjectLayout';
+import { resolveLiveLink } from '../utils/liveDemo';
 import { Shield, Users, Smartphone, Key, Lock, Database } from 'lucide-react';
 
 const PocketphonePage: React.FC = () => {
@@ -12,7 +13,7 @@ const PocketphonePage: React.FC = () => {
       title="Pocketphone"
       subtitle="A comprehensive phone inventory management system featuring a secure admin panel, role-based access control, and dynamic product showcasing."
       tags={['PHP', 'MySQL', 'JavaScript', 'Security']}
-      demoLink="/live/pocketphone/admin/index.php"
+      demoLink={resolveLiveLink('/live/pocketphone/admin/index.php', true)}
     >
        {/* Hero Image Placeholder */}
        <div className="w-full h-64 md:h-96 bg-gradient-to-br from-purple-900/40 to-pink-900/40 rounded-3xl border border-white/10 flex items-center justify-center overflow-hidden relative">

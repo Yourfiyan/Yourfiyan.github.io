@@ -53,7 +53,8 @@ export const LABS: Lab[] = [
     desc: "A web-based music player interface exploring audio APIs and custom controls.",
     link: "/live/music_player/index.html",
     tags: ["HTML", "JS", "Audio API"],
-    icon: Music
+    icon: Music,
+    requiresPhp: true
   },
   {
     id: 2,
@@ -69,7 +70,8 @@ export const LABS: Lab[] = [
     desc: "Direct access to the inventory management admin panel demo.",
     link: "/live/pocketphone/admin/index.php",
     tags: ["PHP", "Admin", "Demo"],
-    icon: Smartphone
+    icon: Smartphone,
+    requiresPhp: true
   }
 ];
 

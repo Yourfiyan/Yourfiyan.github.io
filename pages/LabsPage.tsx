@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Terminal } from 'lucide-react';
 import { LABS } from '../constants';
+import { resolveLiveLink } from '../utils/liveDemo';
 
 const LabsPage: React.FC = () => {
   useEffect(() => {
@@ -36,7 +37,7 @@ const LabsPage: React.FC = () => {
                     className="group"
                 >
                     <a 
-                        href={lab.link} 
+                        href={resolveLiveLink(lab.link, lab.requiresPhp)} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="block h-full glass-card p-6 rounded-2xl border border-white/10 hover:border-primary/50 transition-all hover:-translate-y-1"

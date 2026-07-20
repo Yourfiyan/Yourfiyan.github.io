@@ -1,4 +1,4 @@
-import { Terminal, Cpu, Code2, Globe, Server, Calculator, Smartphone, ShieldCheck, Music, Beaker } from 'lucide-react';
+import { Server, Calculator, Smartphone, Music } from 'lucide-react';
 import { Certificate, Lab } from './types';
 
 export const GITHUB_USERNAME = "yourfiyan";

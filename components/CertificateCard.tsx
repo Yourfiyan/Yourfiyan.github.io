@@ -3,15 +3,19 @@ import { motion } from 'framer-motion';
 import { ExternalLink, Calendar, Building, Award, FileText, Shield } from 'lucide-react';
 import { Certificate } from '../types';
 
-// Accent color based on issuer
-function getIssuerAccent(issuer: string): { gradient: string; bg: string; text: string; border: string } {
+// Accent color based on issuer.
+// NOTE: every class must appear as a complete literal string — Tailwind's
+// compiler scans source text and cannot see runtime-composed names like
+// `group-hover:${accent.border}` (that variant was silently never
+// generated before; hence the explicit hoverBorder entries).
+function getIssuerAccent(issuer: string): { gradient: string; bg: string; text: string; border: string; hoverBorder: string } {
   const lower = issuer.toLowerCase();
-  if (lower.includes('anthropic')) return { gradient: 'from-amber-400 to-orange-500', bg: 'bg-amber-500/15', text: 'text-amber-400', border: 'border-amber-500/30' };
-  if (lower.includes('walmart')) return { gradient: 'from-blue-400 to-blue-600', bg: 'bg-blue-500/15', text: 'text-blue-400', border: 'border-blue-500/30' };
-  if (lower.includes('skyscanner')) return { gradient: 'from-cyan-400 to-teal-500', bg: 'bg-cyan-500/15', text: 'text-cyan-400', border: 'border-cyan-500/30' };
-  if (lower.includes('lloyds')) return { gradient: 'from-emerald-400 to-green-500', bg: 'bg-emerald-500/15', text: 'text-emerald-400', border: 'border-emerald-500/30' };
-  if (lower.includes('msme')) return { gradient: 'from-indigo-400 to-teal-500', bg: 'bg-indigo-500/15', text: 'text-indigo-400', border: 'border-indigo-500/30' };
-  return { gradient: 'from-purple-400 to-pink-500', bg: 'bg-purple-500/15', text: 'text-purple-400', border: 'border-purple-500/30' };
+  if (lower.includes('anthropic')) return { gradient: 'from-amber-400 to-orange-500', bg: 'bg-amber-500/15', text: 'text-amber-400', border: 'border-amber-500/30', hoverBorder: 'group-hover:border-amber-500/30' };
+  if (lower.includes('walmart')) return { gradient: 'from-blue-400 to-blue-600', bg: 'bg-blue-500/15', text: 'text-blue-400', border: 'border-blue-500/30', hoverBorder: 'group-hover:border-blue-500/30' };
+  if (lower.includes('skyscanner')) return { gradient: 'from-cyan-400 to-teal-500', bg: 'bg-cyan-500/15', text: 'text-cyan-400', border: 'border-cyan-500/30', hoverBorder: 'group-hover:border-cyan-500/30' };
+  if (lower.includes('lloyds')) return { gradient: 'from-emerald-400 to-green-500', bg: 'bg-emerald-500/15', text: 'text-emerald-400', border: 'border-emerald-500/30', hoverBorder: 'group-hover:border-emerald-500/30' };
+  if (lower.includes('msme')) return { gradient: 'from-indigo-400 to-teal-500', bg: 'bg-indigo-500/15', text: 'text-indigo-400', border: 'border-indigo-500/30', hoverBorder: 'group-hover:border-indigo-500/30' };
+  return { gradient: 'from-purple-400 to-pink-500', bg: 'bg-purple-500/15', text: 'text-purple-400', border: 'border-purple-500/30', hoverBorder: 'group-hover:border-purple-500/30' };
 }
 
 interface CertificateCardProps {
@@ -33,7 +37,7 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, index })
       {/* Glow effect on hover */}
       <div className={`absolute inset-0 bg-gradient-to-br ${accent.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-15 transition-opacity duration-700`} />
       
-      <div className={`relative h-full glass-card rounded-3xl overflow-hidden flex flex-col transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl border border-white/[0.06] group-hover:${accent.border}`}>
+      <div className={`relative h-full glass-card rounded-3xl overflow-hidden flex flex-col transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl border border-white/[0.06] ${accent.hoverBorder}`}>
         
         {/* Top accent bar */}
         <div className={`h-1 w-full bg-gradient-to-r ${accent.gradient}`} />

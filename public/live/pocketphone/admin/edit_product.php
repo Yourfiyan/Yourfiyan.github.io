@@ -3,6 +3,7 @@
 require_once "auth_check.php";
 // Include config file
 require_once "db_config.php";
+require_once "csrf.php";
  
 // Prevent demo user from editing products
 if (isset($_SESSION["username"]) && $_SESSION["username"] === 'admin') {
@@ -47,6 +48,7 @@ if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    csrf_verify();
     // Get hidden input values
     $product_id = $_POST["id"];
     $current_image_path = $_POST["current_image_path"];
@@ -74,17 +76,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if a new image was uploaded
     if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
-        $allowed = ["jpg" => "image/jpg", "jpeg" => "image/jpeg", "png" => "image/png", "webp" => "image/webp"];
+        // See add_product.php — client MIME is untrusted; validate by
+        // decoding the file with getimagesize().
+        $allowed = ["jpg" => IMAGETYPE_JPEG, "jpeg" => IMAGETYPE_JPEG, "png" => IMAGETYPE_PNG, "webp" => IMAGETYPE_WEBP];
         $filename = $_FILES["image"]["name"];
-        $filetype = $_FILES["image"]["type"];
         $filesize = $_FILES["image"]["size"];
-        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
         if (!array_key_exists($ext, $allowed)) $image_err = "Invalid file format.";
         $maxsize = 5 * 1024 * 1024;
         if ($filesize > $maxsize) $image_err = "File size is too large (Max 5MB).";
-        
-        if (in_array($filetype, $allowed) && empty($image_err)) {
+        $imginfo = empty($image_err) ? @getimagesize($_FILES["image"]["tmp_name"]) : false;
+        if (empty($image_err) && (!$imginfo || $imginfo[2] !== $allowed[$ext])) {
+            $image_err = "Uploaded file is not a valid image of the declared type.";
+        }
+
+        if (empty($image_err)) {
             $new_image_filename = uniqid() . "." . $ext;
             $target_file = "../uploads/" . $new_image_filename;
 
@@ -144,25 +151,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ?>
 
         <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post" enctype="multipart/form-data">
+            <?php echo csrf_field(); ?>
             <div class="form-group">
                 <label>Product Name</label>
-                <input type="text" name="name" value="<?php echo $name; ?>">
+                <input type="text" name="name" value="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>">
                 <?php if(!empty($name_err)) echo '<span class="error-msg">' . $name_err . '</span>'; ?>
             </div>
             <div class="form-group">
                 <label>Condition</label>
-                <input type="text" name="condition" value="<?php echo $condition; ?>">
+                <input type="text" name="condition" value="<?php echo htmlspecialchars($condition, ENT_QUOTES); ?>">
                 <?php if(!empty($condition_err)) echo '<span class="error-msg">' . $condition_err . '</span>'; ?>
             </div>
             <div class="form-group">
                 <label>Price</label>
-                <input type="text" name="price" value="<?php echo $price; ?>">
+                <input type="text" name="price" value="<?php echo htmlspecialchars($price, ENT_QUOTES); ?>">
                 <?php if(!empty($price_err)) echo '<span class="error-msg">' . $price_err . '</span>'; ?>
             </div>
             <div class="form-group">
                 <label>Current Image</label>
                 <div>
-                    <img src="../uploads/<?php echo $current_image_path; ?>" class="thumbnail" alt="Current Image">
+                    <img src="../uploads/<?php echo htmlspecialchars($current_image_path, ENT_QUOTES); ?>" class="thumbnail" alt="Current Image">
                 </div>
             </div>
             <div class="form-group">
@@ -173,8 +181,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             
             <!-- Hidden fields to pass ID and current image path -->
-            <input type="hidden" name="id" value="<?php echo $product_id; ?>">
-            <input type="hidden" name="current_image_path" value="<?php echo $current_image_path; ?>">
+            <input type="hidden" name="id" value="<?php echo htmlspecialchars($product_id, ENT_QUOTES); ?>">
+            <input type="hidden" name="current_image_path" value="<?php echo htmlspecialchars($current_image_path, ENT_QUOTES); ?>">
             
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Update Product">

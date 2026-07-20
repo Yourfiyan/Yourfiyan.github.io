@@ -3,6 +3,7 @@
 require_once "auth_check.php";
 // Include config file
 require_once "db_config.php";
+require_once "csrf.php";
 
 // Handle messages from other pages (e.g., after add/edit/delete)
 $message = "";
@@ -42,7 +43,7 @@ if (isset($_SESSION['message'])) {
 
         <?php 
         if (!empty($message)) {
-            echo '<div class="success-msg">' . $message . '</div>';
+            echo '<div class="success-msg">' . htmlspecialchars($message, ENT_QUOTES) . '</div>';
         }
         ?>
 
@@ -80,7 +81,11 @@ if (isset($_SESSION['message'])) {
                                 if (!isset($_SESSION["username"]) || $_SESSION["username"] !== 'admin') {
                                     echo "<td class='action-links'>";
                                         echo "<a href='edit_product.php?id=" . $row['id'] . "' class='btn btn-secondary'>Edit</a>";
-                                        echo "<a href='delete_product.php?id=" . $row['id'] . "' class='btn btn-danger' onclick='return confirm(\"Are you sure you want to delete this product? This action cannot be undone.\")'>Delete</a>";
+                                        echo "<form method='post' action='delete_product.php' style='display:inline' onsubmit='return confirm(\"Are you sure you want to delete this product? This action cannot be undone.\")'>";
+                                        echo csrf_field();
+                                        echo "<input type='hidden' name='id' value='" . (int)$row['id'] . "'>";
+                                        echo "<button type='submit' class='btn btn-danger'>Delete</button>";
+                                        echo "</form>";
                                     echo "</td>";
                                 }
                             echo "</tr>";

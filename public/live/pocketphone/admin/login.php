@@ -12,6 +12,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
  
 // Include config file
 require_once "db_config.php";
+require_once "csrf.php";
  
 // Define variables and initialize with empty values
 $username = $password = "";
@@ -19,6 +20,7 @@ $username_err = $password_err = $login_err = "";
  
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    csrf_verify();
  
     // Check if username is empty
     if (empty(trim($_POST["username"]))) {
@@ -110,9 +112,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ?>
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <?php echo csrf_field(); ?>
             <div class="form-group">
                 <label>Username</label>
-                <input type="text" name="username" value="<?php echo $username; ?>">
+                <input type="text" name="username" value="<?php echo htmlspecialchars($username, ENT_QUOTES); ?>">
                 <?php if(!empty($username_err)) echo '<span class="error-msg">' . $username_err . '</span>'; ?>
             </div>    
             <div class="form-group">

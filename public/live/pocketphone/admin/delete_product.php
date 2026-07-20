@@ -3,6 +3,7 @@
 require_once "auth_check.php";
 // Include config file
 require_once "db_config.php";
+require_once "csrf.php";
 
 // Prevent demo user from deleting products
 if (isset($_SESSION["username"]) && $_SESSION["username"] === 'admin') {
@@ -11,9 +12,11 @@ if (isset($_SESSION["username"]) && $_SESSION["username"] === 'admin') {
     exit();
 }
 
-// Process delete operation only if ID is present
-if (isset($_GET["id"]) && !empty(trim($_GET["id"]))) {
-    $product_id = trim($_GET["id"]);
+// Deletion is state-changing: require POST + a valid CSRF token.
+// (GET deletes could be triggered by a crafted link or by crawlers.)
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id"]) && !empty(trim($_POST["id"]))) {
+    csrf_verify();
+    $product_id = trim($_POST["id"]);
     
     // First, get the image path to delete the file from the server
     $sql_select = "SELECT image_path FROM products WHERE id = ?";

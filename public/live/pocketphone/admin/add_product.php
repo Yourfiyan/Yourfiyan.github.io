@@ -3,6 +3,7 @@
 require_once "auth_check.php";
 // Include config file
 require_once "db_config.php";
+require_once "csrf.php";
 
 // Prevent demo user from adding products
 if (isset($_SESSION["username"]) && $_SESSION["username"] === 'admin') {
@@ -16,6 +17,7 @@ $name_err = $condition_err = $price_err = $image_err = $error_msg = "";
  
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    csrf_verify();
     // Validate name
     $name = trim($_POST["name"]);
     if (empty($name)) {
@@ -36,13 +38,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validate image
     if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
-        $allowed = ["jpg" => "image/jpg", "jpeg" => "image/jpeg", "png" => "image/png", "webp" => "image/webp"];
+        // Allowed extensions mapped to the IMAGETYPE_* constants that
+        // getimagesize() actually detects — the client-supplied
+        // $_FILES["type"] is attacker-controlled and is NOT trusted.
+        $allowed = ["jpg" => IMAGETYPE_JPEG, "jpeg" => IMAGETYPE_JPEG, "png" => IMAGETYPE_PNG, "webp" => IMAGETYPE_WEBP];
         $filename = $_FILES["image"]["name"];
-        $filetype = $_FILES["image"]["type"];
         $filesize = $_FILES["image"]["size"];
     
         // Verify file extension
-        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
         if (!array_key_exists($ext, $allowed)) {
             $image_err = "Please select a valid file format (JPG, JPEG, PNG, WEBP).";
         }
@@ -53,21 +57,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $image_err = "File size is larger than the allowed limit (5MB).";
         }
     
-        // Verify MIME type
-        if (in_array($filetype, $allowed)) {
+        // Verify actual content: must decode as the image type the
+        // extension claims (blocks PHP payloads renamed to .png etc.)
+        $imginfo = empty($image_err) ? @getimagesize($_FILES["image"]["tmp_name"]) : false;
+        if (empty($image_err) && (!$imginfo || $imginfo[2] !== $allowed[$ext])) {
+            $image_err = "Uploaded file is not a valid image of the declared type.";
+        }
+        if (empty($image_err)) {
             // Create a unique name
             $new_filename = uniqid() . "." . $ext;
             // IMPORTANT: Set target directory to parent folder's 'uploads'
             $target_file = "../uploads/" . $new_filename; 
 
-            if (empty($image_err)) {
-                // Try to move the uploaded file
-                if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                    $image_err = "There was an error uploading your file.";
-                }
+            // Try to move the uploaded file
+            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                $image_err = "There was an error uploading your file.";
             }
-        } else {
-            $image_err = "Please select a valid file format.";
         }
     } else {
         $image_err = "Please select an image to upload.";
@@ -124,19 +129,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ?>
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
+            <?php echo csrf_field(); ?>
             <div class="form-group">
                 <label>Product Name</label>
-                <input type="text" name="name" value="<?php echo $name; ?>">
+                <input type="text" name="name" value="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>">
                 <?php if(!empty($name_err)) echo '<span class="error-msg">' . $name_err . '</span>'; ?>
             </div>
             <div class="form-group">
                 <label>Condition</label>
-                <input type="text" name="condition" value="<?php echo $condition; ?>" placeholder="e.g., Pristine Condition, Excellent Condition">
+                <input type="text" name="condition" value="<?php echo htmlspecialchars($condition, ENT_QUOTES); ?>" placeholder="e.g., Pristine Condition, Excellent Condition">
                 <?php if(!empty($condition_err)) echo '<span class="error-msg">' . $condition_err . '</span>'; ?>
             </div>
             <div class="form-group">
                 <label>Price</label>
-                <input type="text" name="price" value="<?php echo $price; ?>" placeholder="e.g., ₹45,999">
+                <input type="text" name="price" value="<?php echo htmlspecialchars($price, ENT_QUOTES); ?>" placeholder="e.g., ₹45,999">
                 <?php if(!empty($price_err)) echo '<span class="error-msg">' . $price_err . '</span>'; ?>
             </div>
             <div class="form-group">

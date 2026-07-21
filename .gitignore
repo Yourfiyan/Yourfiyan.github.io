@@ -40,3 +40,6 @@ __pycache__/
 
 # Server-only PHP secrets (uploaded once via FTP, never committed)
 db_config.local.php
+
+# Local pre-edit backups (never ship these)
+_backup_*/

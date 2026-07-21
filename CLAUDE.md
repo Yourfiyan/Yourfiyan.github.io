@@ -69,5 +69,8 @@ Rules that follow:
 - Respect reduced motion (`MotionConfig reducedMotion="user"` + the
   media block in `index.css`); errors render inline with `role="alert"`.
 - Commits: `type(scope): summary` with a body explaining why.
+- **Never add AI attribution to commits** — no `Co-Authored-By: Claude`,
+  no "Generated with" trailers. Commits are authored by the repo owner
+  only. (Enforced by `.claude/settings.json` → `includeCoAuthoredBy: false`.)
 - Don't rewrite working systems without measurable benefit; preserve the
   glass-morphism, data-driven design philosophy.

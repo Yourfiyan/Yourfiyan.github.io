@@ -1,5 +1,5 @@
-import { Server, Calculator, Smartphone, Music } from 'lucide-react';
-import { Certificate, Lab } from './types';
+import { Server, Calculator, Smartphone, Music, MousePointer2 } from 'lucide-react';
+import { Certificate, CursorCategory, Lab } from './types';
 
 export const GITHUB_USERNAME = "yourfiyan";
 
@@ -72,6 +72,88 @@ export const LABS: Lab[] = [
     tags: ["PHP", "Admin", "Demo"],
     icon: Smartphone,
     requiresPhp: true
+  },
+  {
+    id: 4,
+    title: "Cursor Playground",
+    desc: "An interactive reference for every standard CSS cursor — hover to preview, click to copy the CSS.",
+    link: "/labs/cursor-playground",
+    tags: ["CSS", "UX", "Reference"],
+    icon: MousePointer2,
+    internal: true
+  }
+];
+
+// Every standard CSS `cursor` keyword (CSS Basic User Interface spec),
+// grouped the way the spec groups them. Rendered by the Cursor Playground
+// lab (/labs/cursor-playground): hover previews the cursor, click copies
+// the rule. Hints are deliberately short — they fit on one card line.
+export const CURSOR_CATEGORIES: CursorCategory[] = [
+  {
+    name: "General",
+    cursors: [
+      { value: "auto", hint: "Lets the browser decide from context" },
+      { value: "default", hint: "The platform's standard arrow" },
+      { value: "none", hint: "Hides the cursor entirely" }
+    ]
+  },
+  {
+    name: "Links & Status",
+    cursors: [
+      { value: "context-menu", hint: "A context menu is available here" },
+      { value: "help", hint: "Help is available for this element" },
+      { value: "pointer", hint: "Marks links and clickable things" },
+      { value: "progress", hint: "Working on it — still interactive" },
+      { value: "wait", hint: "Busy — hang tight" }
+    ]
+  },
+  {
+    name: "Selection",
+    cursors: [
+      { value: "cell", hint: "Selecting a spreadsheet-style cell" },
+      { value: "crosshair", hint: "Precise picking, screenshot-style" },
+      { value: "text", hint: "Selectable text — the classic I-beam" },
+      { value: "vertical-text", hint: "Selectable vertical text" }
+    ]
+  },
+  {
+    name: "Drag & Drop",
+    cursors: [
+      { value: "alias", hint: "A shortcut or alias will be made" },
+      { value: "copy", hint: "Dropping makes a copy" },
+      { value: "grab", hint: "This can be picked up" },
+      { value: "grabbing", hint: "Currently being dragged" },
+      { value: "move", hint: "The grabbed thing will move" },
+      { value: "no-drop", hint: "Can't drop the item here" },
+      { value: "not-allowed", hint: "This action isn't permitted" }
+    ]
+  },
+  {
+    name: "Resize & Scroll",
+    cursors: [
+      { value: "all-scroll", hint: "Pan or scroll in any direction" },
+      { value: "col-resize", hint: "Resize a column horizontally" },
+      { value: "row-resize", hint: "Resize a row vertically" },
+      { value: "n-resize", hint: "Drag the top edge" },
+      { value: "e-resize", hint: "Drag the right edge" },
+      { value: "s-resize", hint: "Drag the bottom edge" },
+      { value: "w-resize", hint: "Drag the left edge" },
+      { value: "ne-resize", hint: "Drag the top-right corner" },
+      { value: "nw-resize", hint: "Drag the top-left corner" },
+      { value: "se-resize", hint: "Drag the bottom-right corner" },
+      { value: "sw-resize", hint: "Drag the bottom-left corner" },
+      { value: "ew-resize", hint: "Resize left–right, both ways" },
+      { value: "ns-resize", hint: "Resize up–down, both ways" },
+      { value: "nesw-resize", hint: "Diagonal resize, ↗ to ↙" },
+      { value: "nwse-resize", hint: "Diagonal resize, ↖ to ↘" }
+    ]
+  },
+  {
+    name: "Zoom",
+    cursors: [
+      { value: "zoom-in", hint: "Zoom in for a closer look" },
+      { value: "zoom-out", hint: "Zoom out to see more" }
+    ]
   }
 ];
 

@@ -1,9 +1,40 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Terminal } from 'lucide-react';
+import { ArrowRight, ExternalLink, Terminal } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { LABS } from '../constants';
+import { Lab } from '../types';
 import { resolveLiveLink } from '../utils/liveDemo';
 import { usePageMeta } from '../hooks/usePageMeta';
+
+const cardClass =
+  'block h-full glass-card p-6 rounded-2xl border border-white/10 hover:border-primary/50 transition-all hover:-translate-y-1';
+
+const LabCardBody: React.FC<{ lab: Lab }> = ({ lab }) => (
+  <>
+    <div className="flex justify-between items-start mb-4">
+      <div className="p-3 bg-white/5 rounded-xl text-secondary group-hover:text-primary transition-colors">
+        <lab.icon size={24} />
+      </div>
+      {lab.internal ? (
+        <ArrowRight size={18} className="text-slate-500 group-hover:text-white transition-colors" />
+      ) : (
+        <ExternalLink size={18} className="text-slate-500 group-hover:text-white transition-colors" />
+      )}
+    </div>
+
+    <h3 className="text-xl font-bold text-white mb-2">{lab.title}</h3>
+    <p className="text-slate-400 text-sm mb-4 leading-relaxed">{lab.desc}</p>
+
+    <div className="flex flex-wrap gap-2 mt-auto">
+      {lab.tags.map(tag => (
+        <span key={tag} className="px-2 py-1 rounded bg-black/30 border border-white/5 text-xs text-slate-300 font-mono">
+          {tag}
+        </span>
+      ))}
+    </div>
+  </>
+);
 
 const LabsPage: React.FC = () => {
   usePageMeta('Labs & Experiments', 'Live demos and web experiments — calculator, music player, and more, hosted right on this site.');
@@ -34,30 +65,20 @@ const LabsPage: React.FC = () => {
                     transition={{ delay: idx * 0.1 }}
                     className="group"
                 >
-                    <a 
-                        href={resolveLiveLink(lab.link, lab.requiresPhp)} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="block h-full glass-card p-6 rounded-2xl border border-white/10 hover:border-primary/50 transition-all hover:-translate-y-1"
-                    >
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="p-3 bg-white/5 rounded-xl text-secondary group-hover:text-primary transition-colors">
-                                <lab.icon size={24} />
-                            </div>
-                            <ExternalLink size={18} className="text-slate-500 group-hover:text-white transition-colors" />
-                        </div>
-                        
-                        <h3 className="text-xl font-bold text-white mb-2">{lab.title}</h3>
-                        <p className="text-slate-400 text-sm mb-4 leading-relaxed">{lab.desc}</p>
-                        
-                        <div className="flex flex-wrap gap-2 mt-auto">
-                            {lab.tags.map(tag => (
-                                <span key={tag} className="px-2 py-1 rounded bg-black/30 border border-white/5 text-xs text-slate-300 font-mono">
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                    </a>
+                    {lab.internal ? (
+                        <Link to={lab.link} className={cardClass}>
+                            <LabCardBody lab={lab} />
+                        </Link>
+                    ) : (
+                        <a
+                            href={resolveLiveLink(lab.link, lab.requiresPhp)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={cardClass}
+                        >
+                            <LabCardBody lab={lab} />
+                        </a>
+                    )}
                 </motion.div>
             ))}
 

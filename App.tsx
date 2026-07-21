@@ -13,6 +13,7 @@ const CustomerSupportPage = React.lazy(() => import('./pages/CustomerSupportPage
 const CalculatoReadyPage = React.lazy(() => import('./pages/CalculatoReadyPage'));
 const PocketphonePage = React.lazy(() => import('./pages/PocketphonePage'));
 const LabsPage = React.lazy(() => import('./pages/LabsPage'));
+const CursorPlaygroundPage = React.lazy(() => import('./pages/CursorPlaygroundPage'));
 const BlogPage = React.lazy(() => import('./pages/BlogPage'));
 const BlogPostPage = React.lazy(() => import('./pages/BlogPostPage'));
 const NotFoundPage = React.lazy(() => import('./pages/NotFoundPage'));
@@ -34,6 +35,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/projects/calculatoready" element={<PageTransition><CalculatoReadyPage /></PageTransition>} />
         <Route path="/projects/pocketphone" element={<PageTransition><PocketphonePage /></PageTransition>} />
         <Route path="/labs" element={<PageTransition><LabsPage /></PageTransition>} />
+        <Route path="/labs/cursor-playground" element={<PageTransition><CursorPlaygroundPage /></PageTransition>} />
         <Route path="/blog" element={<PageTransition><BlogPage /></PageTransition>} />
         <Route path="/blog/:slug" element={<PageTransition><BlogPostPage /></PageTransition>} />
         <Route path="/certificates" element={<PageTransition><CertificatesPage /></PageTransition>} />

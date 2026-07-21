@@ -29,6 +29,25 @@ export interface Lab {
   icon: LucideIcon;
   /** True when the demo needs server-side PHP — only available on yourfiyan.me (InfinityFree). */
   requiresPhp?: boolean;
+  /**
+   * True when the lab is an SPA route inside this site (rendered with a
+   * react-router Link) rather than an external /live/ demo. Internal labs
+   * work identically on both hosts, so resolveLiveLink does not apply.
+   */
+  internal?: boolean;
+}
+
+export interface CursorSpec {
+  /** The CSS `cursor` keyword this entry demonstrates. */
+  value: string;
+  /** Short plain-language note on when the cursor is meant to appear. */
+  hint: string;
+}
+
+export interface CursorCategory {
+  /** Display name — doubles as the filter label on the Cursor Playground page. */
+  name: string;
+  cursors: CursorSpec[];
 }
 
 export interface NavLink {

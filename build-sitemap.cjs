@@ -32,6 +32,7 @@ const STATIC_ROUTES = [
   { path: '/projects/pocketphone',      priority: '0.6', changefreq: 'monthly' },
   { path: '/blog',                      priority: '0.9', changefreq: 'weekly'  },
   { path: '/labs',                      priority: '0.5', changefreq: 'monthly' },
+  { path: '/labs/cursor-playground',    priority: '0.5', changefreq: 'monthly' },
   { path: '/certificates',             priority: '0.5', changefreq: 'monthly' },
   { path: '/contact',                  priority: '0.4', changefreq: 'yearly'  },
 ];

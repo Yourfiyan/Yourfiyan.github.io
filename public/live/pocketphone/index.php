@@ -1,351 +1,466 @@
 <?php
-// Include the database configuration
+/*
+ * PocketPhone — public storefront
+ * Data is fetched up top; everything below is presentation.
+ */
 require_once 'admin/db_config.php';
+
+/** HTML-escape shorthand */
+function e($s) {
+    return htmlspecialchars($s ?? '', ENT_QUOTES, 'UTF-8');
+}
+
+$WHATSAPP_NUMBER = '919707643357';
+$PHONE_DISPLAY   = '+91 97076 43357';
+$INSTAGRAM_URL   = 'https://www.instagram.com/pocketphone2025';
+
+/** Build a wa.me link with a prefilled message */
+function wa_link($message) {
+    global $WHATSAPP_NUMBER;
+    return 'https://wa.me/' . $WHATSAPP_NUMBER . '?text=' . rawurlencode($message);
+}
+
+// ---- Fetch products -------------------------------------------------------
+$products = [];
+if ($result = $conn->query("SELECT id, name, condition_desc, price, image_path FROM products ORDER BY id DESC")) {
+    while ($row = $result->fetch_assoc()) {
+        $products[] = $row;
+    }
+    $result->free();
+}
+$conn->close();
+$product_count = count($products);
+
+// ---- SEO ------------------------------------------------------------------
+$scheme    = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$base_url  = $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? 'pocketphone.example') ;
+$canonical = $base_url . '/';
+
+$meta_description = 'Certified pre-owned phones from Jorhat & Sivasagar, Assam. Every device passes a 32-point inspection, ships with a certificate of authenticity, and is backed by warranty. Buy on WhatsApp.';
+
+// Structured data: local business + current stock
+$json_ld = [
+    '@context' => 'https://schema.org',
+    '@graph'   => [
+        [
+            '@type'       => 'LocalBusiness',
+            '@id'         => $canonical . '#business',
+            'name'        => 'PocketPhone',
+            'slogan'      => 'Not everything old is bad.',
+            'description' => $meta_description,
+            'url'         => $canonical,
+            'telephone'   => '+919707643357',
+            'sameAs'      => [$INSTAGRAM_URL],
+            'address'     => [
+                '@type'           => 'PostalAddress',
+                'addressLocality' => 'Jorhat',
+                'addressRegion'   => 'Assam',
+                'addressCountry'  => 'IN',
+            ],
+        ],
+    ],
+];
+$item_list = [];
+foreach ($products as $i => $p) {
+    $numeric_price = preg_replace('/[^\d.]/', '', $p['price']);
+    $item = [
+        '@type'    => 'Product',
+        'name'     => $p['name'],
+        'image'    => $base_url . '/uploads/' . rawurlencode($p['image_path']),
+        'itemCondition' => 'https://schema.org/RefurbishedCondition',
+        'description'   => $p['condition_desc'],
+    ];
+    if ($numeric_price !== '' && $numeric_price !== '.') {
+        $item['offers'] = [
+            '@type'         => 'Offer',
+            'price'         => $numeric_price,
+            'priceCurrency' => 'INR',
+            'availability'  => 'https://schema.org/InStock',
+        ];
+    }
+    $item_list[] = ['@type' => 'ListItem', 'position' => $i + 1, 'item' => $item];
+}
+if ($item_list) {
+    $json_ld['@graph'][] = [
+        '@type'           => 'ItemList',
+        'name'            => 'Certified pre-owned phones in stock',
+        'itemListElement' => $item_list,
+    ];
+}
+
+// Inspection checkpoints surfaced in the ticker (a sample of the full 32)
+$checkpoints = [
+    'Display panel', 'Touch response', 'Battery health', 'IMEI verification',
+    'Biometrics', 'Rear cameras', 'Front camera', 'Microphones',
+    'Speakers', 'Charging port', 'Wi-Fi & Bluetooth', 'Network bands',
+    'Buttons & haptics', 'Sensors', 'Water damage check', 'Housing & frame',
+];
 ?>
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PocketPhone - Premium Pre-Owned Phones</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>PocketPhone — Certified Pre-Owned Phones | Jorhat & Sivasagar, Assam</title>
+    <meta name="description" content="<?php echo e($meta_description); ?>">
+    <link rel="canonical" href="<?php echo e($canonical); ?>">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PocketPhone">
+    <meta property="og:title" content="PocketPhone — Certified Pre-Owned Phones">
+    <meta property="og:description" content="<?php echo e($meta_description); ?>">
+    <meta property="og:url" content="<?php echo e($canonical); ?>">
+    <meta property="og:image" content="<?php echo e($base_url); ?>/uploads/background.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#050A18">
+
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        /* Define custom color palette and fonts */
-        :root {
-            --primary-dark: #0A1534;
-            --accent-gold: #F2C200;
-            --light-gray: #E5E7EB;
-            --charcoal-text: #1E293B;
-            --white-text: #FFFFFF;
-        }
-        body {
-            font-family: 'Inter', 'Verdana', sans-serif;
-            background-color: var(--primary-dark);
-            color: var(--white-text);
-        }
-        h1, h2, h3, .heading-font {
-            font-family: 'Inter', 'Segoe UI', 'Arial Black', sans-serif;
-            font-weight: 900;
-        }
-        .bg-primary-dark { background-color: var(--primary-dark); }
-        .bg-accent-gold { background-color: var(--accent-gold); }
-        .bg-light-gray { background-color: var(--light-gray); }
-        .text-accent-gold { color: var(--accent-gold); }
-        .text-charcoal { color: var(--charcoal-text); }
-        .border-accent-gold { border-color: var(--accent-gold); }
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-        /* Smooth scroll for anchor links */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Animation for sections */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <script>document.documentElement.classList.add('js');</script>
+
+    <script type="application/ld+json"><?php echo json_encode($json_ld, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP); ?></script>
 </head>
-<body class="bg-primary-dark antialiased">
+<body>
+    <a class="skip-link" href="#phones">Skip to phones</a>
 
-    <!-- Header & Navigation -->
-    <header id="header" class="bg-primary-dark bg-opacity-80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 shadow-lg">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <a href="#home" class="text-2xl font-bold heading-font">
-                    Pocket<span class="text-accent-gold">Phone</span>
+    <header class="site-header" id="top" data-header>
+        <div class="container header-inner">
+            <a href="#top" class="wordmark" aria-label="PocketPhone — back to top">
+                Pocket<span>Phone</span><i class="wordmark-dot" aria-hidden="true"></i>
+            </a>
+
+            <nav class="site-nav" id="site-nav" aria-label="Primary">
+                <a href="#phones" data-nav>Phones</a>
+                <a href="#standard" data-nav>The Standard</a>
+                <a href="#how" data-nav>How it works</a>
+                <a href="#about" data-nav>About</a>
+                <a href="#faq" data-nav>FAQ</a>
+                <a class="btn btn-gold btn-sm nav-cta" href="<?php echo e(wa_link("Hello PocketPhone! I'd like to know what's in stock.")); ?>" target="_blank" rel="noopener noreferrer">
+                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a9.9 9.9 0 0 0-8.5 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 1.8a8.2 8.2 0 1 1-4.2 15.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8Zm-3 4.4c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.2.2 1.8 2.8 4.4 3.8 2.1.9 2.6.7 3 .7.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.3-1.6-.8c-.2 0-.4-.1-.6.2l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.1-.2 0-.4.1-.5l.6-.8c.1-.2.1-.4 0-.5l-.7-1.8c-.2-.5-.4-.4-.6-.4H9Z"/></svg>
+                    WhatsApp us
                 </a>
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#home" class="hover:text-accent-gold transition-colors duration-300">Home</a>
-                    <a href="#why-us" class="hover:text-accent-gold transition-colors duration-300">Why Us</a>
-                    <a href="#products" class="hover:text-accent-gold transition-colors duration-300">Products</a>
-                    <a href="#about" class="hover:text-accent-gold transition-colors duration-300">About</a>
-                </nav>
-                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden">
-            <a href="#home" class="block py-2 px-6 text-sm hover:bg-gray-700">Home</a>
-            <a href="#why-us" class="block py-2 px-6 text-sm hover:bg-gray-700">Why Us</a>
-            <a href="#products" class="block py-2 px-6 text-sm hover:bg-gray-700">Products</a>
-            <a href="#about" class="block py-2 px-6 text-sm hover:bg-gray-700">About</a>
+            </nav>
+
+            <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+                <span class="nav-toggle-bar" aria-hidden="true"></span>
+                <span class="nav-toggle-bar" aria-hidden="true"></span>
+            </button>
         </div>
     </header>
 
-    <main>
-        <!-- Section 1: Hero Section (No Changes) -->
-        <section id="home" class="min-h-screen flex items-center bg-cover bg-center" style="background-image: linear-gradient(rgba(10, 21, 52, 0.8), rgba(10, 21, 52, 0.8)), url('uploads/background.png');">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-6xl font-black heading-font leading-tight mb-4">
-                    Premium Pre-Owned Phones.<br class="hidden md:block"> <span class="text-accent-gold">Unbeatable Prices.</span>
-                </h1>
-                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">
-                    Every device is 100% verified, certified, and backed by our warranty. Buy with confidence.
-                </p>
-                <a href="#products" class="bg-accent-gold text-primary-dark font-bold py-3 px-8 rounded-full text-lg hover:bg-yellow-400 transition-all duration-300 transform hover:scale-105 inline-block">
-                    View Our Phones
+    <main id="main">
+
+        <!-- ============ HERO ============ -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-glow" aria-hidden="true"></div>
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <p class="eyebrow hero-item" style="--d:.05s">Certified pre-owned &middot; Jorhat &amp; Sivasagar, Assam</p>
+                    <h1 id="hero-title" class="hero-title">
+                        <span class="hero-line" style="--d:.15s">Not everything</span>
+                        <span class="hero-line" style="--d:.28s"><em class="gold-sweep">old</em> is bad.</span>
+                    </h1>
+                    <p class="hero-sub hero-item" style="--d:.45s">
+                        Every phone we sell passes a 32-point inspection, ships with its own
+                        certificate, and is backed by warranty. See exactly what you're buying —
+                        then talk to a real person on WhatsApp.
+                    </p>
+                    <div class="hero-actions hero-item" style="--d:.58s">
+                        <a class="btn btn-gold btn-lg" href="#phones" data-magnetic>Browse phones</a>
+                        <a class="btn btn-ghost btn-lg" href="#standard">Our 32-point standard</a>
+                    </div>
+                    <p class="hero-proof hero-item mono" style="--d:.7s">
+                        32-point inspection <span class="dot" aria-hidden="true">&#9670;</span>
+                        Certificate included <span class="dot" aria-hidden="true">&#9670;</span>
+                        Warranty backed
+                    </p>
+                </div>
+
+                <!-- CSS phone running its inspection -->
+                <div class="hero-visual hero-item" style="--d:.35s" aria-hidden="true">
+                    <div class="phone">
+                        <div class="phone-notch"></div>
+                        <div class="phone-screen">
+                            <div class="scanline"></div>
+                            <p class="scan-heading mono">PKT&nbsp;DIAGNOSTIC</p>
+                            <ul class="scan-list mono">
+                                <li style="--d:.9s">Display <b>PASS</b></li>
+                                <li style="--d:1.5s">Battery health <b>PASS</b></li>
+                                <li style="--d:2.1s">IMEI check <b>CLEAN</b></li>
+                                <li style="--d:2.7s">Cameras <b>PASS</b></li>
+                                <li style="--d:3.3s">Speakers <b>PASS</b></li>
+                                <li style="--d:3.9s">Charging port <b>PASS</b></li>
+                            </ul>
+                            <p class="scan-result mono" style="--d:4.6s">32/32 &mdash; CERTIFIED</p>
+                        </div>
+                    </div>
+                    <div class="phone-shadow"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ CHECKPOINT TICKER ============ -->
+        <div class="ticker" aria-hidden="true">
+            <div class="ticker-track">
+                <?php for ($t = 0; $t < 2; $t++): ?>
+                <ul class="ticker-list mono">
+                    <?php foreach ($checkpoints as $cp): ?>
+                    <li><?php echo e($cp); ?> <span class="dot">&#9670;</span></li>
+                    <?php endforeach; ?>
+                </ul>
+                <?php endfor; ?>
+            </div>
+        </div>
+
+        <!-- ============ PRODUCTS ============ -->
+        <section class="section section-dark" id="phones" aria-labelledby="phones-title">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <p class="eyebrow">In stock</p>
+                        <h2 class="section-title" id="phones-title">Certified &amp; ready to ship.</h2>
+                    </div>
+                    <?php if ($product_count > 0): ?>
+                    <p class="stock-count mono"><?php echo str_pad((string)$product_count, 2, '0', STR_PAD_LEFT); ?> device<?php echo $product_count === 1 ? '' : 's'; ?> available</p>
+                    <?php endif; ?>
+                </div>
+
+                <?php if ($product_count > 0): ?>
+                <ul class="product-grid" role="list">
+                    <?php foreach ($products as $i => $p):
+                        $name   = e($p['name']);
+                        $serial = 'PKT-' . str_pad((string)(int)$p['id'], 4, '0', STR_PAD_LEFT);
+                        $wa     = wa_link("Hello PocketPhone, I'm interested in the {$p['name']} ({$serial}) listed on your website.");
+                    ?>
+                    <li class="product-card reveal" style="--i:<?php echo $i % 4; ?>">
+                        <figure class="product-media">
+                            <img src="uploads/<?php echo e($p['image_path']); ?>"
+                                 alt="<?php echo $name; ?>"
+                                 width="600" height="450" loading="lazy" decoding="async"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/600x450/0C1832/F0B43E?text=Photo+coming+soon';">
+                            <span class="seal" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><path fill="currentColor" d="m9.6 16.6-4.2-4.2 1.4-1.4 2.8 2.8 7.6-7.6 1.4 1.4-9 9Z"/></svg>
+                            </span>
+                        </figure>
+                        <div class="product-body">
+                            <p class="product-serial mono"><?php echo $serial; ?> &middot; certified</p>
+                            <h3 class="product-name"><?php echo $name; ?></h3>
+                            <p class="product-cond"><?php echo e($p['condition_desc']); ?></p>
+                            <div class="product-rule" aria-hidden="true"></div>
+                            <p class="product-price mono"><?php echo e($p['price']); ?></p>
+                            <a class="btn btn-gold btn-block" href="<?php echo e($wa); ?>" target="_blank" rel="noopener noreferrer">
+                                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a9.9 9.9 0 0 0-8.5 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 1.8a8.2 8.2 0 1 1-4.2 15.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8Zm-3 4.4c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.2.2 1.8 2.8 4.4 3.8 2.1.9 2.6.7 3 .7.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.3-1.6-.8c-.2 0-.4-.1-.6.2l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.1-.2 0-.4.1-.5l.6-.8c.1-.2.1-.4 0-.5l-.7-1.8c-.2-.5-.4-.4-.6-.4H9Z"/></svg>
+                                Buy on WhatsApp
+                            </a>
+                        </div>
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
+                <?php else: ?>
+                <div class="empty-state reveal">
+                    <p class="empty-title">New stock is on its way.</p>
+                    <p class="empty-copy">We add certified phones every week. Message us and we'll tell you exactly what's coming — or find one for you.</p>
+                    <a class="btn btn-gold" href="<?php echo e(wa_link('Hello PocketPhone! What phones do you have coming in stock?')); ?>" target="_blank" rel="noopener noreferrer">Ask what's coming</a>
+                </div>
+                <?php endif; ?>
+            </div>
+        </section>
+
+        <!-- ============ THE STANDARD ============ -->
+        <section class="section section-light" id="standard" aria-labelledby="standard-title">
+            <div class="container standard-grid">
+                <div class="cert-wrap reveal" aria-hidden="true">
+                    <div class="cert">
+                        <p class="cert-brand mono">POCKETPHONE &middot; CERTIFICATE OF AUTHENTICITY</p>
+                        <p class="cert-big">32<span>/32</span></p>
+                        <p class="cert-caption mono">CHECKS PASSED</p>
+                        <dl class="cert-fields mono">
+                            <div><dt>Device</dt><dd>Verified original</dd></div>
+                            <div><dt>IMEI</dt><dd>Clean &middot; not reported</dd></div>
+                            <div><dt>Battery</dt><dd>Health tested</dd></div>
+                            <div><dt>Warranty</dt><dd>Included</dd></div>
+                        </dl>
+                        <div class="cert-foot">
+                            <span class="cert-sign">The PocketPhone Standard</span>
+                            <span class="cert-seal">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m9.6 16.6-4.2-4.2 1.4-1.4 2.8 2.8 7.6-7.6 1.4 1.4-9 9Z"/></svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="standard-copy">
+                    <p class="eyebrow reveal">The PocketPhone Standard</p>
+                    <h2 class="section-title reveal" id="standard-title">Every phone earns its certificate.</h2>
+                    <p class="section-lead reveal">
+                        "Pre-owned" only means uncertain when nobody checks. We check —
+                        32 times, on every single device — before it's allowed anywhere near you.
+                    </p>
+                    <ul class="pillars" role="list">
+                        <li class="pillar reveal" style="--i:0">
+                            <svg class="pillar-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3Zm-1.4 13.6L7.4 12.4l1.4-1.4 1.8 1.8 4.6-4.6 1.4 1.4-6 6Z"/></svg>
+                            <h3>32-point inspection</h3>
+                            <p>Screen, battery, cameras, ports, sensors, network — tested by hand, not assumed.</p>
+                        </li>
+                        <li class="pillar reveal" style="--i:1">
+                            <svg class="pillar-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm-1 7V3.5L18.5 9H13Zm-5 4h8v2H8v-2Zm0 4h8v2H8v-2Z"/></svg>
+                            <h3>Certificate of authenticity</h3>
+                            <p>Your phone arrives with written proof it passed — including a clean IMEI check.</p>
+                        </li>
+                        <li class="pillar reveal" style="--i:2">
+                            <svg class="pillar-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4Zm0 10h7c-.5 4.1-3.3 8-7 9V11H5V6.3l7-3.1V11Z"/></svg>
+                            <h3>Warranty backed</h3>
+                            <p>If something's wrong, we make it right. Exact terms come with each device — in writing.</p>
+                        </li>
+                        <li class="pillar reveal" style="--i:3">
+                            <svg class="pillar-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 4h13v11h1.5l2.5-4h1v9h-2a3 3 0 1 1-6 0H9a3 3 0 1 1-6 0H1V4h2Zm3 15a1 1 0 1 0 2 0 1 1 0 0 0-2 0Zm10 0a1 1 0 1 0 2 0 1 1 0 0 0-2 0ZM20 13.5V12h-1l-1 1.5h2Z"/></svg>
+                            <h3>Delivered across India</h3>
+                            <p>Packed and shipped securely from Jorhat &amp; Sivasagar — tracked to your door.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ HOW IT WORKS ============ -->
+        <section class="section section-dark" id="how" aria-labelledby="how-title">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <p class="eyebrow">How it works</p>
+                        <h2 class="section-title" id="how-title">Three steps. No surprises.</h2>
+                    </div>
+                </div>
+                <ol class="steps" role="list">
+                    <li class="step reveal" style="--i:0">
+                        <span class="step-num mono" aria-hidden="true">01</span>
+                        <h3>Browse &amp; choose</h3>
+                        <p>Every phone listed is already inspected, certified, and priced. What you see is what exists.</p>
+                    </li>
+                    <li class="step reveal" style="--i:1">
+                        <span class="step-num mono" aria-hidden="true">02</span>
+                        <h3>Chat on WhatsApp</h3>
+                        <p>Talk to a real person. Ask for photos or a video of the exact unit — we'll happily send them.</p>
+                    </li>
+                    <li class="step reveal" style="--i:2">
+                        <span class="step-num mono" aria-hidden="true">03</span>
+                        <h3>Confirm &amp; receive</h3>
+                        <p>We confirm payment and delivery in chat. Your phone arrives with its certificate and warranty.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ============ ABOUT ============ -->
+        <section class="section section-light" id="about" aria-labelledby="about-title">
+            <div class="container about-grid">
+                <div class="about-copy">
+                    <p class="eyebrow reveal">From Jorhat, with standards</p>
+                    <h2 class="section-title reveal" id="about-title">A small shop with a stubborn standard.</h2>
+                    <p class="reveal">
+                        PocketPhone started in Jorhat, Assam, with a simple belief: a great phone
+                        shouldn't cost a fortune, and a pre-owned one shouldn't be a leap of faith.
+                        Too many people get burned buying used — so we built the checks we wished existed.
+                    </p>
+                    <p class="reveal">
+                        We're not a marketplace and we're not a middleman. Every device passes through
+                        our own hands and our own 32-point inspection before it's listed. If it doesn't
+                        meet the PocketPhone Standard, you never see it.
+                    </p>
+                </div>
+                <ul class="about-facts" role="list">
+                    <li class="fact reveal" style="--i:0"><span class="fact-big">2</span><span class="fact-label">cities — Jorhat &amp; Sivasagar</span></li>
+                    <li class="fact reveal" style="--i:1"><span class="fact-big">32</span><span class="fact-label">checks on every device</span></li>
+                    <li class="fact reveal" style="--i:2"><span class="fact-big">1</span><span class="fact-label">certificate with every phone</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============ FAQ ============ -->
+        <section class="section section-dark" id="faq" aria-labelledby="faq-title">
+            <div class="container faq-wrap">
+                <div class="section-head reveal">
+                    <div>
+                        <p class="eyebrow">Questions</p>
+                        <h2 class="section-title" id="faq-title">Asked before. Answered honestly.</h2>
+                    </div>
+                </div>
+
+                <div class="faq-list reveal">
+                    <details class="faq-item" name="faq">
+                        <summary>Are the phones original?<span class="faq-mark" aria-hidden="true"></span></summary>
+                        <p>Yes. Every device is checked for authenticity and its IMEI is verified as clean — not reported lost or stolen. That verification is part of the certificate you receive.</p>
+                    </details>
+                    <details class="faq-item" name="faq">
+                        <summary>What does "certified" actually mean?<span class="faq-mark" aria-hidden="true"></span></summary>
+                        <p>It means the phone passed our 32-point inspection: display, touch, battery health, cameras, speakers, microphones, ports, sensors, network, and more. If a device fails any check, we don't sell it.</p>
+                    </details>
+                    <details class="faq-item" name="faq">
+                        <summary>Is there a warranty?<span class="faq-mark" aria-hidden="true"></span></summary>
+                        <p>Yes — every phone is backed by our warranty. The exact terms for your device are shared in writing on WhatsApp before you buy, so there's nothing to decode later.</p>
+                    </details>
+                    <details class="faq-item" name="faq">
+                        <summary>Can I see the exact phone before buying?<span class="faq-mark" aria-hidden="true"></span></summary>
+                        <p>Absolutely. Ask us on WhatsApp and we'll send photos or a live video of the exact unit — scratches, screen, battery stats, everything.</p>
+                    </details>
+                    <details class="faq-item" name="faq">
+                        <summary>How do payment and delivery work?<span class="faq-mark" aria-hidden="true"></span></summary>
+                        <p>We confirm payment options and delivery details with you in chat before anything ships. Phones are packed securely and delivered across India from Jorhat &amp; Sivasagar.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ FINAL CTA ============ -->
+        <section class="cta-band" aria-labelledby="cta-title">
+            <div class="container cta-inner reveal">
+                <h2 class="cta-title" id="cta-title">Your next phone is already certified.</h2>
+                <a class="btn btn-ink btn-lg" href="<?php echo e(wa_link("Hello PocketPhone! I'd like to know what's in stock.")); ?>" target="_blank" rel="noopener noreferrer" data-magnetic>
+                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a9.9 9.9 0 0 0-8.5 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 1.8a8.2 8.2 0 1 1-4.2 15.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8Zm-3 4.4c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.2.2 1.8 2.8 4.4 3.8 2.1.9 2.6.7 3 .7.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.3-1.6-.8c-.2 0-.4-.1-.6.2l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.1-.2 0-.4.1-.5l.6-.8c.1-.2.1-.4 0-.5l-.7-1.8c-.2-.5-.4-.4-.6-.4H9Z"/></svg>
+                    Chat on WhatsApp
                 </a>
-            </div>
-        </section>
-
-        <!-- Section 2: Why Choose PocketPhone? (No Changes) -->
-        <section id="why-us" class="py-20 bg-light-gray fade-in-section">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-charcoal heading-font">Why Choose <span class="text-blue-900">PocketPhone</span>?</h2>
-                    <p class="text-gray-600 mt-2">Your trust is our top priority. Here's our promise to you.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-                    <!-- Feature 1 -->
-                    <div class="bg-white p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="bg-blue-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                           <svg class="w-10 h-10 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-charcoal heading-font mb-2">Rigorous 32-Point Quality Check</h3>
-                        <p class="text-gray-600 text-sm">Every phone is expertly tested to ensure 100% functionality and authenticity.</p>
-                    </div>
-                    <!-- Feature 2 -->
-                    <div class="bg-white p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="bg-blue-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                             <svg class="w-10 h-10 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-charcoal heading-font mb-2">Certificate of Authenticity</h3>
-                        <p class="text-gray-600 text-sm">Your purchase comes with proof that it meets the PocketPhone Standard.</p>
-                    </div>
-                    <!-- Feature 3 -->
-                    <div class="bg-white p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="bg-blue-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                            <svg class="w-10 h-10 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-charcoal heading-font mb-2">Comprehensive Warranty</h3>
-                        <p class="text-gray-600 text-sm">Shop with peace of mind. Every device is backed by a valid warranty.</p>
-                    </div>
-                    <!-- Feature 4 -->
-                    <div class="bg-white p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="bg-blue-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                           <svg class="w-10 h-10 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10l2-2h8a1 1 0 001-1zM22 9h-4a1 1 0 00-1 1v6a1 1 0 001 1h4v1a2 2 0 01-2 2h-1.382a3 3 0 00-5.236 0H7a3 3 0 00-5.236 0H1a1 1 0 01-1-1v-1a1 1 0 011-1h1.382a3.001 3.001 0 005.236 0H14"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-charcoal heading-font mb-2">Fast & Secure Delivery</h3>
-                        <p class="text-gray-600 text-sm">Operating from Jorhat & Sivasagar, we deliver quality across India.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Featured Products -->
-        <section id="products" class="py-20 bg-primary-dark fade-in-section">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white heading-font">Featured Products</h2>
-                    <p class="text-gray-300 mt-2">Hand-picked devices, certified and ready for you.</p>
-                </div>
-                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    
-                    <!-- PHP Product Loop Start -->
-                    <?php
-                    // Fetch products from database
-                    $sql = "SELECT * FROM products ORDER BY id DESC";
-                    $result = $conn->query($sql);
-
-                    if ($result->num_rows > 0) {
-                        // Loop through each product
-                        while($row = $result->fetch_assoc()) {
-                            $product_name = htmlspecialchars($row['name']);
-                            $condition_desc = htmlspecialchars($row['condition_desc']);
-                            $price = htmlspecialchars($row['price']);
-                            // IMPORTANT: Assumes an 'uploads/' folder in the same directory as index.php
-                            $image_url = "uploads/" . htmlspecialchars($row['image_path']);
-                            
-                            // Create dynamic WhatsApp link
-                            $encoded_product_name = urlencode("Hello PocketPhone, I'm interested in the " . $product_name . " listed on your website.");
-                            $whatsapp_link = "https://wa.me/919707643357?text=" . $encoded_product_name;
-                    ?>
-
-                    <!-- Dynamic Product Card Start -->
-                    <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col">
-                        <img src="<?php echo $image_url; ?>" alt="<?php echo $product_name; ?>" class="w-full h-56 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x400/E5E7EB/0A1534?text=Image+Missing';">
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold heading-font text-white"><?php echo $product_name; ?></h3>
-                            <p class="text-sm text-gray-400 mt-1"><?php echo $condition_desc; ?></p>
-                            <p class="text-2xl font-black text-accent-gold my-4"><?php echo $price; ?></p>
-                            <div class="mt-auto">
-                                <a href="<?php echo $whatsapp_link; ?>" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-accent-gold text-primary-dark font-bold py-2 px-4 rounded-lg hover:bg-yellow-400 transition-colors duration-300">
-                                    Buy on WhatsApp
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Dynamic Product Card End -->
-
-                    <?php
-                        } // End while loop
-                    } else {
-                        echo "<p class='text-gray-300 col-span-full text-center'>No products available at this time. Please check back later.</p>";
-                    }
-                    ?>
-                    <!-- PHP Product Loop End -->
-
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 4: About Us (No Changes) -->
-        <section id="about" class="py-20 bg-light-gray fade-in-section">
-            <div class="container mx-auto px-6">
-                <div class="flex flex-col md:flex-row items-center gap-12">
-                    <div class="md:w-1/2">
-                        <img src="https://placehold.co/600x400/0A1534/F2C200?text=Our+Team" alt="PocketPhone Team" class="rounded-lg shadow-2xl w-full">
-                    </div>
-                    <div class="md:w-1/2 text-charcoal">
-                        <h2 class="text-3xl font-bold heading-font mb-4">Welcome to PocketPhone</h2>
-                        <p class="mb-4">Where trust meets technology. Founded in Jorhat, Assam, we began with a simple mission: to make premium smartphones accessible and affordable for everyone. We believe that owning a high-quality device shouldn’t break the bank.</p>
-                        <p class="mb-4">At PocketPhone, we're not just selling phones; we're delivering peace of mind. Each device in our collection undergoes a rigorous 32-point inspection to ensure it meets our 'PocketPhone Standard'—a benchmark for quality, performance, and reliability. We stand by every product we sell, backing it with a certificate of authenticity and a comprehensive warranty.</p>
-                        <p class="mb-6">We are a team of passionate tech enthusiasts dedicated to providing you with a transparent, trustworthy, and satisfying shopping experience.</p>
-                        <p class="text-2xl italic text-center md:text-left text-blue-900 heading-font mt-8">PocketPhone — Not everything old is bad.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 5: How It Works (No Changes) -->
-        <section id="how-it-works" class="py-20 bg-primary-dark fade-in-section">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold heading-font">How It Works</h2>
-                    <p class="text-gray-300 mt-2">A simple and secure process from start to finish.</p>
-                </div>
-                <div class="relative">
-                    <!-- Connecting line -->
-                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-700" style="transform: translateY(-50%);"></div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-                        <!-- Step 1 -->
-                        <div class="text-center z-10">
-                            <div class="bg-accent-gold text-primary-dark w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4 border-4 border-primary-dark">1</div>
-                            <h3 class="text-xl font-bold heading-font mb-2">Browse & Choose</h3>
-                            <p class="text-gray-400">Explore our curated selection of certified pre-owned smartphones.</p>
-                        </div>
-                        <!-- Step 2 -->
-                        <div class="text-center z-10">
-                            <div class="bg-accent-gold text-primary-dark w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4 border-4 border-primary-dark">2</div>
-                            <h3 class="text-xl font-bold heading-font mb-2">Contact Us on WhatsApp</h3>
-                            <p class="text-gray-400">Click 'Buy on WhatsApp' to connect with our team instantly.</p>
-                        </div>
-                        <!-- Step 3 -->
-                        <div class="text-center z-10">
-                            <div class="bg-accent-gold text-primary-dark w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4 border-4 border-primary-dark">3</div>
-                            <h3 class="text-xl font-bold heading-font mb-2">Confirm & Receive</h3>
-                            <p class="text-gray-400">We'll finalize details and ship your phone with a certificate and warranty.</p>
-                        </div>
-                    </div>
-                </div>
+                <p class="cta-phone mono"><a href="tel:+919707643357"><?php echo e($PHONE_DISPLAY); ?></a></p>
             </div>
         </section>
     </main>
 
-    <!-- Footer (No Changes) -->
-    <footer class="bg-gray-900 text-gray-300 py-12">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Column 1: Logo and Slogan -->
-                <div class="md:col-span-1">
-                    <a href="#home" class="text-2xl font-bold heading-font">
-                        Pocket<span class="text-accent-gold">Phone</span>
-                    </a>
-                    <p class="mt-4 text-sm text-gray-400 italic">Not everything old is bad.</p>
-                </div>
-                <!-- Column 2: Quick Links -->
-                <div>
-                    <h4 class="font-bold text-white mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#home" class="hover:text-accent-gold transition-colors duration-300">Home</a></li>
-                        <li><a href="#products" class="hover:text-accent-gold transition-colors duration-300">Products</a></li>
-                        <li><a href="#about" class="hover:text-accent-gold transition-colors duration-300">About Us</a></li>
-                    </ul>
-                </div>
-                <!-- Column 3: Legal -->
-                <div>
-                    <h4 class="font-bold text-white mb-4">Legal</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-accent-gold transition-colors duration-300">Terms & Conditions</a></li>
-                        <li><a href="#" class="hover:text-accent-gold transition-colors duration-300">Warranty Policy</a></li>
-                    </ul>
-                </div>
-                <!-- Column 4: Contact Us -->
-                <div>
-                    <h4 class="font-bold text-white mb-4">Contact Us</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li class="flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
-                            <span>+91 9707643357</span>
-                        </li>
-                        <li class="flex items-center">
-                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
-                            <span>Jorhat / Sivasagar, Assam</span>
-                        </li>
-                    </ul>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="https://www.instagram.com/pocketphone2025" target="_blank" rel="noopener noreferrer" class="hover:text-accent-gold transition-colors duration-300">
-                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218 1.791.465 2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.08 2.525c.636-.247 1.363-.416 2.427-.465C9.53 2.013 9.884 2 12.315 2zM12 7a5 5 0 100 10 5 5 0 000-10zm0-2a7 7 0 110 14 7 7 0 010-14zm6.406-2.34a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z" clip-rule="evenodd" /></svg>
-                        </a>
-                    </div>
-                </div>
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <a href="#top" class="wordmark">Pocket<span>Phone</span><i class="wordmark-dot" aria-hidden="true"></i></a>
+                <p class="footer-slogan">Not everything old is bad.</p>
             </div>
-            <div class="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
-                <p>&copy; 2025 PocketPhone. All Rights Reserved.</p>
+            <nav class="footer-col" aria-label="Footer">
+                <h4 class="mono">Explore</h4>
+                <a href="#phones">Phones</a>
+                <a href="#standard">The Standard</a>
+                <a href="#how">How it works</a>
+                <a href="#faq">FAQ</a>
+            </nav>
+            <div class="footer-col">
+                <h4 class="mono">Contact</h4>
+                <a href="tel:+919707643357"><?php echo e($PHONE_DISPLAY); ?></a>
+                <a href="<?php echo e(wa_link('Hello PocketPhone!')); ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="<?php echo e($INSTAGRAM_URL); ?>" target="_blank" rel="noopener noreferrer">Instagram — @pocketphone2025</a>
+                <p>Jorhat &amp; Sivasagar, Assam</p>
             </div>
+            <div class="footer-col">
+                <h4 class="mono">Good to know</h4>
+                <a href="<?php echo e(wa_link('Hello PocketPhone! Could you share your warranty terms?')); ?>" target="_blank" rel="noopener noreferrer">Warranty terms — ask us</a>
+                <a href="#standard">What "certified" means</a>
+            </div>
+        </div>
+        <div class="container footer-bar">
+            <p>&copy; <?php echo date('Y'); ?> PocketPhone. All rights reserved.</p>
+            <p class="mono">Certified in Assam &middot; delivered across India</p>
         </div>
     </footer>
 
-    <script>
-        // --- Mobile Menu Toggle ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        // --- Close mobile menu on link click ---
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-
-        // --- Animate sections on scroll ---
-        const sections = document.querySelectorAll('.fade-in-section');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-
-        // --- Add shadow to header on scroll ---
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 10) {
-                header.classList.add('shadow-xl');
-            } else {
-                header.classList.remove('shadow-xl');
-            }
-        });
-
-    </script>
+    <script src="assets/js/main.js" defer></script>
 </body>
 </html>

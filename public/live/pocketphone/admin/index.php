@@ -19,21 +19,29 @@ if (isset($_SESSION['message'])) {
     <meta charset="UTF-8">
     <title>Admin Dashboard - PocketPhone</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div class="header-bar">
-            <h1>PocketPhone Admin Dashboard</h1>
+            <div>
+                <a class="admin-brand" href="../" style="margin-bottom:0">Pocket<span>Phone</span><small>Admin console</small></a>
+            </div>
             <div>
                 <?php if (!isset($_SESSION["username"]) || $_SESSION["username"] !== 'admin'): ?>
-                    <a href="add_product.php" class="btn btn-primary">Add New Product</a>
+                    <a href="add_product.php" class="btn btn-primary">Add product</a>
                 <?php endif; ?>
-                <a href="logout.php" class="btn btn-danger">Logout</a>
+                <a href="../" class="btn btn-secondary" target="_blank" rel="noopener">View site</a>
+                <a href="logout.php" class="btn btn-danger">Log out</a>
             </div>
         </div>
-        
-        <p>Welcome, <strong><?php echo htmlspecialchars($_SESSION["username"] ?? ''); ?></strong>!</p>
+
+        <p>Signed in as <strong><?php echo htmlspecialchars($_SESSION["username"] ?? ''); ?></strong></p>
 
         <?php if (isset($_SESSION["username"]) && $_SESSION["username"] === 'admin'): ?>
             <div class="demo-notice">

@@ -98,12 +98,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Admin Login - PocketPhone</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="login-container">
-        <h2>Admin Login</h2>
-        <p>Please fill in your credentials to login.</p>
+        <a class="admin-brand" href="../">Pocket<span>Phone</span><small>Admin console</small></a>
+        <h2>Welcome back</h2>
+        <p>Sign in to manage your inventory.</p>
 
         <?php 
         if (!empty($login_err)) {
@@ -114,17 +120,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <?php echo csrf_field(); ?>
             <div class="form-group">
-                <label>Username</label>
-                <input type="text" name="username" value="<?php echo htmlspecialchars($username, ENT_QUOTES); ?>">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" name="username" autocomplete="username" value="<?php echo htmlspecialchars($username, ENT_QUOTES); ?>">
                 <?php if(!empty($username_err)) echo '<span class="error-msg">' . $username_err . '</span>'; ?>
             </div>    
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" autocomplete="current-password">
                 <?php if(!empty($password_err)) echo '<span class="error-msg">' . $password_err . '</span>'; ?>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
+                <input type="submit" class="btn btn-primary" value="Sign in">
             </div>
         </form>
     </div>

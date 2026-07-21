@@ -64,6 +64,10 @@ Rules that follow:
 ## Conventions
 
 - Content edits go in `constants.ts`, not components.
+- Official contact methods are email, GitHub, and **LinkedIn**
+  (https://www.linkedin.com/in/yourfiyan/). All three live in
+  `CONTACT_INFO` (`constants.ts`) and JSON-LD `sameAs` (`index.html`);
+  preserve them in any refactor of contact/footer components.
 - Every route page calls `usePageMeta(title, description)`.
 - Images: webp at display size, width/height, alt, lazy below the fold.
 - Respect reduced motion (`MotionConfig reducedMotion="user"` + the

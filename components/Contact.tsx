@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Github, ArrowRight } from 'lucide-react';
+import { Mail, MapPin, Github, Linkedin, ArrowRight } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
 
 const Contact: React.FC = () => {
@@ -71,6 +71,18 @@ const Contact: React.FC = () => {
                             <p className="text-sm text-slate-500 mb-1">GitHub</p>
                             <a href={CONTACT_INFO.github} target="_blank" rel="noopener noreferrer" className="text-white font-medium text-lg hover:underline decoration-secondary underline-offset-4">
                                 github.com/Yourfiyan
+                            </a>
+                        </div>
+                    </div>
+
+                    <div className="glass-card p-6 rounded-2xl flex items-center gap-4 group hover:bg-white/5 transition-colors">
+                        <div className="p-3 rounded-full bg-sky-500/20 text-sky-400 group-hover:text-sky-300 group-hover:scale-110 transition-all">
+                            <Linkedin size={24} />
+                        </div>
+                        <div>
+                            <p className="text-sm text-slate-500 mb-1">LinkedIn</p>
+                            <a href={CONTACT_INFO.linkedin} target="_blank" rel="noopener noreferrer" className="text-white font-medium text-lg hover:underline decoration-secondary underline-offset-4">
+                                linkedin.com/in/yourfiyan
                             </a>
                         </div>
                     </div>

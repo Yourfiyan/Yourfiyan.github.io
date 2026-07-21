@@ -126,7 +126,8 @@ export const CERTIFICATES: Certificate[] = [
 export const CONTACT_INFO = {
   location: "Titabar, Assam, India",
   email: "yourfiyan@proton.me",
-  github: "https://github.com/yourfiyan"
+  github: "https://github.com/yourfiyan",
+  linkedin: "https://www.linkedin.com/in/yourfiyan/"
 };
 
 export const NAV_LINKS = [

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Github, Send, MessageSquare, Clock, Globe } from 'lucide-react';
+import { Mail, MapPin, Github, Linkedin, Send, MessageSquare, Clock, Globe } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
 import { usePageMeta } from '../hooks/usePageMeta';
 
@@ -202,6 +202,18 @@ const ContactPage: React.FC = () => {
                         <p className="text-sm text-slate-500 mb-1">Check my code</p>
                         <a href={CONTACT_INFO.github} target="_blank" rel="noopener noreferrer" className="text-white font-medium text-lg hover:text-secondary transition-colors">
                             github.com/Yourfiyan
+                        </a>
+                    </div>
+                </div>
+
+                <div className="glass-card p-6 rounded-2xl flex items-center gap-4 hover:bg-white/5 transition-colors">
+                    <div className="p-4 rounded-full bg-sky-500/20 text-sky-400">
+                        <Linkedin size={24} />
+                    </div>
+                    <div>
+                        <p className="text-sm text-slate-500 mb-1">Connect professionally</p>
+                        <a href={CONTACT_INFO.linkedin} target="_blank" rel="noopener noreferrer" className="text-white font-medium text-lg hover:text-secondary transition-colors">
+                            linkedin.com/in/yourfiyan
                         </a>
                     </div>
                 </div>
